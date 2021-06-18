@@ -1,13 +1,14 @@
 ##########################################################################
-# Main main file, use this file to execute the main program using
+# Entry-point to the program, execute using
 #
-# "python main.py"
+# > python main.py
 #
 # TODO Update if any arguments are needed
 ##########################################################################
 
 import pygame as pg
 from pygame.locals import *
+from WindowSettings import *
 
 
 class GameExecutor():
