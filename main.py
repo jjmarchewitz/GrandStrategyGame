@@ -1,14 +1,17 @@
-##########################################################################
-# Entry-point to the program, execute using
-#
-# > python main.py
-#
-# TODO Update if any arguments are needed
-##########################################################################
+"""
+Entry-point to the program, execute using
+
+> python main.py
+
+TODO Update if any arguments are needed
+"""
+
+import pdb
+# pdb.set_trace()
 
 import pygame as pg
 from pygame.locals import *
-from WindowSettings import *
+from window import window
 
 
 class GameExecutor():
@@ -16,39 +19,50 @@ class GameExecutor():
 
     def __init__(self):
         """Defining class constants and variables, calling main()."""
-        self.WINDOW_WIDTH = 500
-        self.WINDOW_HEIGHT = 500
-        self.program_running = True
+        self.states = {
+            "QUIT": 0,
+            "MENU": 1,
+            "GAME": 2,
+        }
 
+        # Set the state to be in the menu
+        self.program_state = self.states["MENU"]
+
+        # Initialize pygame
+        pg.init()
+        pg.key.set_repeat()
+
+        # Initialize the game window
+        self.window = window.Window()
+
+        # Start game
         self.main()
 
     def main(self):
         """Entry-point into the program."""
-        # Initialize pygame
-        pg.init()
+        # Menu loop
+        while self.states["MENU"] == self.program_state:
+            self.process_quit_events()
 
-        # Verify that pygame initialized correctly
-        if not pg.display.get_init():
-            raise SystemError("Display module did not properly initialize.")
+        # Game loop
+        while self.states["GAME"] == self.program_state:
+            self.process_quit_events()
 
-        # Open a new window at the desired dimensions and set its properties
-        pg.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT))
-        pg.display.set_caption("Game")
-
-        # Main display loop
-        while self.program_running:
-            self.process_pygame_events()
 
         # Quit pygame
+        self.exit_program()
+
+    def exit_program(self):
+        """Fully closes the game, anything that needs to be done before shutdown should happen here."""
         pg.quit()
 
-    def process_pygame_events(self):
+    def process_quit_events(self):
         """Process all of the pygame events pulled from pg.event.get()."""
         # Process pygame events
         for event in pg.event.get():
             # Quit condition
-            if event.type is pg.QUIT:
-                self.program_running = False
+            if pg.QUIT == event.type:
+                self.program_state = self.states["QUIT"]
 
 
 # Keep at the bottom of the script
