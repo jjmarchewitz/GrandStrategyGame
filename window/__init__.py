@@ -1,1 +1,1 @@
-__all__ = ["menu", "sound", "window"]
+__all__ = ["main_menu", "sound", "window"]

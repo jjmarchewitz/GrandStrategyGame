@@ -8,58 +8,37 @@ from pygame.locals import *
 class Window():
     """Wrapper around all display functions."""
 
+    # Singleton instance
+    __instance = None
+    def get_instance():
+        if Window.__instance == None:
+            Window()
+        return Window.__instance
+
     def __init__(self):
+        if Window.__instance == None:
+            Window.__instance = self
+            
         # Window constants
-        self.window_properties = {
+        self.properties = {
             "NAME": "Game",
-            "WIDTH": 1920,
-            "HEIGHT": 1080,
+            "WIDTH": 500,
+            "HEIGHT": 500,
             "MENU_BACKGROUND": (25, 205, 255),
-            "FULLSCREEN": False
+            "FULLSCREEN": True
         }
 
-        # Main menu button constants
-        self.button_properties = {
-            "WIDTH": self.window_properties["WIDTH"]/5,
-            "HEIGHT": self.window_properties["HEIGHT"]/10,
-            "CENTER_COLOR": (255, 255, 255),
-            "BORDER_COLOR": (0, 0, 0),
-            "TEXT_COLOR": (255, 255, 255),
-        }
+        pg.init()
+        pg.display.init()
 
         # Open a new window at the desired dimensions and set its properties
-        if self.window_properties["FULLSCREEN"]:
-            self.display_surface = pg.display.set_mode((self.window_properties["WIDTH"], self.window_properties["HEIGHT"]), pg.FULLSCREEN)
+        if self.properties["FULLSCREEN"]:
+            display_info = pg.display.Info()
+            self.properties["WIDTH"] = display_info.current_w
+            self.properties["HEIGHT"] = display_info.current_h
+            # Initialize display surface as full screen at full resolution
+            self.display_surface = pg.display.set_mode((self.properties["WIDTH"], self.properties["HEIGHT"]), pg.FULLSCREEN)
         else:
-            self.display_surface = pg.display.set_mode((self.window_properties["WIDTH"], self.window_properties["HEIGHT"]))
-        pg.display.set_caption(self.window_properties["NAME"])
-
-    def main_menu(self):
-        """Draw the main menu and check for button presses.
-        
-        This gets called in a loop and if statements can be used to perform actions once per frame.
-        """
-        # Blue background
-        pg.Surface.fill(self.display_surface, self.window_properties["MENU_BACKGROUND"])
-
-        # Center coordinates of each button
-        button_center_coordinates = {
-            "SINGLE_PLAYER": (self.window_properties["WIDTH"]/2, self.window_properties["HEIGHT"]/4)
-        }
-
-        # Draw buttons
-        self.draw_button("SINGLE PLAYER", button_center_coordinates["SINGLE_PLAYER"])
-        
-
-    def draw_button(self, text, center_coords):
-        """Draw a button on screen with default size and colors, with given text and center coordinates."""
-        center_x = center_coords[0]
-        center_y = center_coords[1]
-
-        # Create in top left with proper width and height, then move to make it easier to read
-        button = pg.Rect(0, 0, self.button_properties["WIDTH"], self.button_properties["HEIGHT"])
-        # Move in-place treats the button as a mutable type
-        button.move_ip(center_x - self.button_properties["WIDTH"]/2, center_y - self.button_properties["HEIGHT"]/2)
-
-        # Draw button to display surface
-        pg.draw.rect(self.display_surface, self.button_properties["CENTER_COLOR"], button)
+            # Initialize display surface as a window
+            self.display_surface = pg.display.set_mode((self.properties["WIDTH"], self.properties["HEIGHT"]))
+        pg.display.set_caption(self.properties["NAME"])

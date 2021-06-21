@@ -19,24 +19,30 @@ class GameExecutor():
 
     def __init__(self):
         """Defining class constants and variables, calling main()."""
+
+        # Initialize pygame objects
+        pg.init()
+        pg.display.init()
+
+        # Get singleton instances
+        self.window = window.Window.get_instance()
+        self.main_menu = main_menu.MainMenu.get_instance()
+
+        # Define program states
         self.states = {
-            "QUIT": 0,
-            "MAIN_MENU": 1,
-            "OPTIONS": 2,
-            "SINGLE_PLAYER": 3,
-            "HOST_MP": 4,
-            "JOIN_MP": 5,
+            "MAIN_MENU": 0,
+            "SINGLE_PLAYER": 1,
+            "HOST_MP": 2,
+            "JOIN_MP": 3,
+            "OPTIONS": 4,
+            "QUIT": 5,
         }
 
         # Set the state to be in the menu
         self.program_state = self.states["MAIN_MENU"]
 
-        # Initialize pygame
-        pg.init()
+        # Turn off repeated key input
         pg.key.set_repeat()
-
-        # Initialize the game window
-        self.window = window.Window()
 
         # Start game
         self.main()
@@ -47,7 +53,7 @@ class GameExecutor():
         while self.states["QUIT"] != self.program_state:
             # Main menu
             while self.states["MAIN_MENU"] == self.program_state:
-                self.window.main_menu()
+                self.main_menu.main_menu()
 
                 # Update frame
                 pg.display.flip()
@@ -80,8 +86,10 @@ class GameExecutor():
         """Process all of the pygame events pulled from pg.event.get()."""
         # Process pygame events
         for event in pg.event.get():
-            # Quit condition
+            # Quit conditions
             if pg.QUIT == event.type:
+                self.program_state = self.states["QUIT"]
+            elif pg.KEYDOWN == event.type and pg.K_ESCAPE == event.key:
                 self.program_state = self.states["QUIT"]
 
 
