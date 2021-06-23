@@ -4,7 +4,7 @@
 
 import pygame as pg
 from pygame.locals import *
-from window import window
+# from window import window
 
 class MainMenu():
     # Singleton instance
@@ -31,7 +31,7 @@ class MainMenu():
 
     def main_menu(self):
         """Draw the main menu and check for button presses.
-        
+
         This gets called in a loop and if statements can be used to perform actions once per frame.
         """
         # Blue background
@@ -50,13 +50,14 @@ class MainMenu():
         }
 
         # Draw buttons
-        self.draw_button("SINGLE PLAYER", button_center_coordinates["SINGLE_PLAYER"])
-        self.draw_button("HOST", button_center_coordinates["HOST_MP"])
-        self.draw_button("JOIN", button_center_coordinates["JOIN_MP"])
-        self.draw_button("OPTIONS", button_center_coordinates["OPTIONS"])
-        self.draw_button("QUIT", button_center_coordinates["QUIT"])
-        
-    
+        main_menu_buttons = {
+            "SINGLE_PLAYER": self.draw_button("SINGLE PLAYER", button_center_coordinates["SINGLE_PLAYER"]),
+            "HOST_MP": self.draw_button("HOST", button_center_coordinates["HOST_MP"]),
+            "JOIN_MP": self.draw_button("JOIN", button_center_coordinates["JOIN_MP"]),
+            "OPTIONS": self.draw_button("OPTIONS", button_center_coordinates["OPTIONS"]),
+            "QUIT": self.draw_button("QUIT", button_center_coordinates["QUIT"]),
+        }
+
 
     def draw_button(self, text, center_coords):
         """Draw a button on screen with default size and colors, with given text and center coordinates."""
@@ -68,9 +69,22 @@ class MainMenu():
         # Move in-place treats the button as a mutable type
         button.move_ip(center_x - self.button_properties["WIDTH"]/2, center_y - self.button_properties["HEIGHT"]/2)
 
+        # Create a new surface for the button's rectangle
+        button = pg.Surface((self.button_properties["WIDTH"], self.button_properties["HEIGHT"]))
+
+        # Color the button
+        button.fill(self.button_properties["CENTER_COLOR"])
+
+        # Destination coords
+        top_left_button_x = 
+        top_left_button_y =
+
         # Draw button to display surface
-        pg.draw.rect(self.window.display_surface, self.button_properties["CENTER_COLOR"], button)
-    
+        self.window.display_surface.blit(button, (top_left_button_x, top_left_button_y))
+        
+
+        return button
+
 
 # Singleton instance
 menu_obj = None

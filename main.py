@@ -26,7 +26,7 @@ class GameExecutor():
 
         # Get singleton instances
         self.window = window.Window.get_instance()
-        self.main_menu = main_menu.MainMenu.get_instance()
+        self.main_menu = window.main_menu.main_menu.MainMenu.get_instance()
 
         # Define program states
         self.states = {
