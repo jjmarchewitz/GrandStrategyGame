@@ -11,7 +11,8 @@ import pdb
 
 import pygame as pg
 from pygame.locals import *
-from window import *
+from game_window.window import Window
+from game_window.main_menu.main_menu import MainMenu
 
 
 class GameExecutor():
@@ -25,8 +26,8 @@ class GameExecutor():
         pg.display.init()
 
         # Get singleton instances
-        self.window = window.Window.get_instance()
-        self.main_menu = window.main_menu.main_menu.MainMenu.get_instance()
+        self.game_window = Window.get_instance()
+        self.main_menu = MainMenu.get_instance()
 
         # Define program states
         self.states = {
@@ -50,6 +51,7 @@ class GameExecutor():
     def main(self):
         """Entry-point into the program."""
 
+        # Loop until quit condition is met
         while self.states["QUIT"] != self.program_state:
             # Main menu
             while self.states["MAIN_MENU"] == self.program_state:

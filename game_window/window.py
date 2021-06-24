@@ -25,7 +25,7 @@ class Window():
             "WIDTH": 500,
             "HEIGHT": 500,
             "MENU_BACKGROUND": (25, 205, 255),
-            "FULLSCREEN": True
+            "FULLSCREEN": False
         }
 
         pg.init()
@@ -41,4 +41,6 @@ class Window():
         else:
             # Initialize display surface as a window
             self.display_surface = pg.display.set_mode((self.properties["WIDTH"], self.properties["HEIGHT"]))
+
+
         pg.display.set_caption(self.properties["NAME"])

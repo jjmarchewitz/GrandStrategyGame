@@ -4,7 +4,7 @@
 
 import pygame as pg
 from pygame.locals import *
-# from window import window
+from game_window.window import Window
 
 class MainMenu():
     # Singleton instance
@@ -18,15 +18,18 @@ class MainMenu():
         if MainMenu.__instance == None:
             MainMenu.__instance = self
 
-        self.window = window.Window.get_instance()
+        self.window = Window.get_instance()
 
         # Main menu button constants
         self.button_properties = {
-            "WIDTH": self.window.properties["WIDTH"]/4,
-            "HEIGHT": self.window.properties["HEIGHT"]/16,
+            "WIDTH": 2*self.window.properties["WIDTH"]/6,
+            "HEIGHT": self.window.properties["HEIGHT"]/12,
             "CENTER_COLOR": (255, 255, 255),
             "BORDER_COLOR": (0, 0, 0),
             "TEXT_COLOR": (255, 255, 255),
+            "CENTER_X": self.window.properties["WIDTH"]/2,
+            "START_Y": 4*self.window.properties["HEIGHT"]/12,
+            "Y_GAP": self.window.properties["HEIGHT"]/16,
         }
 
     def main_menu(self):
@@ -37,32 +40,19 @@ class MainMenu():
         # Blue background
         pg.Surface.fill(self.window.display_surface, self.window.properties["MENU_BACKGROUND"])
 
-        # Center X value of the screen
-        center_x = self.window.properties["WIDTH"]/2
-
-        # Center coordinates of each button
-        button_center_coordinates = {
-            "SINGLE_PLAYER": (center_x, 5*self.window.properties["HEIGHT"]/16),
-            "HOST_MP": (center_x, 7*self.window.properties["HEIGHT"]/16),
-            "JOIN_MP": (center_x, 9*self.window.properties["HEIGHT"]/16),
-            "OPTIONS": (center_x, 11*self.window.properties["HEIGHT"]/16),
-            "QUIT": (center_x, 13*self.window.properties["HEIGHT"]/16),
-        }
-
         # Draw buttons
         main_menu_buttons = {
-            "SINGLE_PLAYER": self.draw_button("SINGLE PLAYER", button_center_coordinates["SINGLE_PLAYER"]),
-            "HOST_MP": self.draw_button("HOST", button_center_coordinates["HOST_MP"]),
-            "JOIN_MP": self.draw_button("JOIN", button_center_coordinates["JOIN_MP"]),
-            "OPTIONS": self.draw_button("OPTIONS", button_center_coordinates["OPTIONS"]),
-            "QUIT": self.draw_button("QUIT", button_center_coordinates["QUIT"]),
+            "SINGLE_PLAYER": self.draw_button("SINGLE PLAYER", 1),
+            "HOST_MP": self.draw_button("HOST", 2),
+            "JOIN_MP": self.draw_button("JOIN", 3),
+            "OPTIONS": self.draw_button("OPTIONS", 4),
+            "QUIT": self.draw_button("QUIT", 5),
         }
 
-
-    def draw_button(self, text, center_coords):
+    def draw_button(self, text, order_num):
         """Draw a button on screen with default size and colors, with given text and center coordinates."""
-        center_x = center_coords[0]
-        center_y = center_coords[1]
+        center_x = self.button_properties["CENTER_X"]
+        center_y = self.button_properties["START_Y"] + (order_num - 1) * (self.button_properties["HEIGHT"] + self.button_properties["Y_GAP"])
 
         # Create in top left with proper width and height, then move to make it easier to read
         button = pg.Rect(0, 0, self.button_properties["WIDTH"], self.button_properties["HEIGHT"])
@@ -76,8 +66,8 @@ class MainMenu():
         button.fill(self.button_properties["CENTER_COLOR"])
 
         # Destination coords
-        top_left_button_x = 
-        top_left_button_y =
+        top_left_button_x = center_x - self.button_properties["WIDTH"]/2
+        top_left_button_y = center_y - self.button_properties["HEIGHT"]/2
 
         # Draw button to display surface
         self.window.display_surface.blit(button, (top_left_button_x, top_left_button_y))
