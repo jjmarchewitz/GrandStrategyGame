@@ -1,15 +1,15 @@
 ##########################################################################
-# Display wrapper: handles resolution, fullscreen toggle, and display object
+# Window: handles resolution, fullscreen toggle, and display object
 ##########################################################################
 
 import pygame as pg
-from pygame.locals import *
 
 class Window():
     """Wrapper around all display functions."""
 
     # Singleton instance
     __instance = None
+    @staticmethod
     def get_instance():
         if Window.__instance == None:
             Window()
@@ -18,15 +18,20 @@ class Window():
     def __init__(self):
         if Window.__instance == None:
             Window.__instance = self
-            
+
         # Window constants
         self.properties = {
             "NAME": "Game",
-            "WIDTH": 500,
-            "HEIGHT": 500,
-            "MENU_BACKGROUND": (25, 205, 255),
-            "FULLSCREEN": False
+            "WIDTH": 600,
+            "HEIGHT": 600,
+            "FULLSCREEN": False,
         }
+        # This is done because dictionary values cannot reference themselves during instantiation
+        self.properties.update({"WIDTH_UNIT": int(self.properties["WIDTH"]/12)})
+        self.properties.update({"CENTER_X": int(self.properties["WIDTH"]/2)})
+        self.properties.update({"HEIGHT_UNIT": int(self.properties["HEIGHT"]/12)})
+        self.properties.update({"CENTER_Y": int(self.properties["HEIGHT"]/2)})
+
 
         pg.init()
         pg.display.init()
@@ -44,3 +49,8 @@ class Window():
 
 
         pg.display.set_caption(self.properties["NAME"])
+
+    def clear(self):
+        # Fill screen with black
+        self.display_surface.fill((0, 0, 0))
+        pg.display.flip()
