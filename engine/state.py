@@ -76,7 +76,7 @@ class State():
         for event in pg.event.get():
             # Quit conditions
             if pg.QUIT == event.type:
-                self.state = self.super["QUIT"]
+                self.update_state(self.super["QUIT"])
 
     def refresh_display(self):
         """Update the display."""

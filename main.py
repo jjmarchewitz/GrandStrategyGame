@@ -45,7 +45,7 @@ class GameExecutor():
             # Show main menu
             if self.state.super["MAIN_MENU"] == self.state.super_state:
                 self.main_menu.main_menu()
-
+ 
         # Quit pygame
         self.exit_program()
 

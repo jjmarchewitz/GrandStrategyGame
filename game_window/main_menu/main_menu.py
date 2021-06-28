@@ -4,6 +4,7 @@
 
 import pygame as pg
 import engine.file_paths as paths
+import textwrap
 from engine.state import State
 from game_window.window import Window
 from .button import Button
@@ -28,10 +29,10 @@ class MainMenu():
         # Main menu properties
         self.properties = {
             "BACKGROUND": (25, 205, 255),
-            "TITLE_TEXT": "HALO 2077",
+            "TITLE_TEXT": "GEARS OF HALO THEFT AUTO 5",
             "TITLE_CENTER_X": self.window.properties["CENTER_X"],
             "TITLE_CENTER_Y": int(1.5*self.window.properties["HEIGHT_UNIT"]),
-            "TITLE_FONT_SIZE": int(1.25* self.window.properties["HEIGHT_UNIT"]),
+            "TITLE_FONT_SIZE": int(1.15* self.window.properties["HEIGHT_UNIT"]),
             "TITLE_COLOR": (50, 50, 50),
         }
 
@@ -97,11 +98,29 @@ class MainMenu():
 
     def draw_title_text(self):
         """Draws the title text onto the main menu screen."""
-        text_surface = self.title_font.render(self.properties["TITLE_TEXT"], True, self.properties["TITLE_COLOR"])
+        # TODO update so that the wrap works with all text by adding words on one by one. "Motherfucker" on a 600x600 will break the current version.
+        wrapped_title_text_lines = textwrap.fill(self.properties["TITLE_TEXT"], 12).split("\n")
+        number_of_lines = len(wrapped_title_text_lines)
+        line_height = self.title_font.size(wrapped_title_text_lines[0])[1]
 
-        top_left_x = int(self.properties["TITLE_CENTER_X"] - text_surface.get_width()/2)
-        top_left_y = int(self.properties["TITLE_CENTER_Y"] - text_surface.get_height()/2)
-        self.window.display_surface.blit(text_surface, (top_left_x, top_left_y))
+        title_surface = pg.Surface((self.window.properties["WIDTH"], number_of_lines * line_height))
+        black = (0, 0, 0)
+        title_surface.fill(black)
+        title_surface.set_colorkey(black)
+
+        for line_number, line in enumerate(wrapped_title_text_lines):
+            text_surface = self.title_font.render(line, True, self.properties["TITLE_COLOR"])
+
+            top_left_x = int(self.window.properties["WIDTH"]/2 - text_surface.get_width()/2)
+            top_left_y = line_number * text_surface.get_height()
+
+            title_surface.blit(text_surface, (top_left_x, top_left_y))
+        
+
+        top_left_x = int(self.window.properties["WIDTH"]/2 - title_surface.get_width()/2)
+        top_left_y = 0
+
+        self.window.display_surface.blit(title_surface, (top_left_x, top_left_y))
 
     
     def update_state(self):
