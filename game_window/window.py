@@ -53,4 +53,3 @@ class Window():
     def clear(self):
         # Fill screen with black
         self.display_surface.fill((0, 0, 0))
-        pg.display.flip()

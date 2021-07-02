@@ -6,10 +6,10 @@ Entry-point to the program, execute using
 TODO Update if any arguments are needed
 """
 
+from engine.events.event_handler import EventHandler
 import pygame as pg
-from engine.state import State
 from game_window.window import Window
-from game_window.main_menu.main_menu import MainMenu
+from game_window.start_menus.start_menu import StartMenu
 
 
 class GameExecutor():
@@ -24,12 +24,13 @@ class GameExecutor():
         pg.font.init()
 
         # Get singleton instances
-        self.state = State.get_instance()
+        self.event_handler = EventHandler.get_instance()
         self.window = Window.get_instance()
-        self.main_menu = MainMenu.get_instance()
+        self.start_menu = StartMenu.get_instance()
 
-        # Set the state to be in the menu
-        self.state.update_state(self.state.main_menu["MAIN"])
+        # Set the game to open the start menu
+        main_menu_event = self.event_handler.create_event("START_MENU", {"MENU_NAME": "MAIN"})
+        pg.event.post(main_menu_event)
 
         # Turn off repeated key input
         pg.key.set_repeat()
@@ -41,11 +42,20 @@ class GameExecutor():
         """Entry-point into the program."""
 
         # Loop until quit condition is met
-        while self.state.super["QUIT"] != self.state.super_state:
-            # Show main menu
-            if self.state.super["MAIN_MENU"] == self.state.super_state:
-                self.main_menu.main_menu()
- 
+        while True:
+            # Get the newest event from the queue
+            current_event = pg.event.poll()
+            
+            # If the event is a quit event, immediately break
+            if current_event.type == pg.QUIT:
+                break
+
+            # Check the event in the start menu
+            self.start_menu.start_menu(current_event)
+
+            # Update the display and queue
+            pg.display.flip()
+            
         # Quit pygame
         self.exit_program()
 
