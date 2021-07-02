@@ -24,25 +24,18 @@ class Button():
             "PRESSED_BUTTON_COLOR": (100, 100, 100),
             "UNPRESSED_TEXT_COLOR": (100, 100, 100),
             "PRESSED_TEXT_COLOR": (255, 255, 255),
-            "CENTER_X": self.window.properties["CENTER_X"],
             "START_Y": 4*self.window.properties["HEIGHT_UNIT"],
             "Y_GAP": int(0.75*self.window.properties["HEIGHT_UNIT"]),
             "FONT_SIZE": int(0.75*self.window.properties["HEIGHT_UNIT"]),
         }
 
-        # Button font
-        font_folder = paths.get_font_folder()
-        self.font = pg.font.Font(font_folder + "Gamy-PERSONAL.otf", self.properties["FONT_SIZE"])
-
-    def draw(self):
-        """Draw a button on screen with default size and colors, with given text and center coordinates."""
         # Center coords
-        center_x = int(self.properties["CENTER_X"])
-        center_y = int(self.properties["START_Y"] + (self.properties["ORDER_NUM"] - 1) * (self.properties["HEIGHT"] + self.properties["Y_GAP"]))
+        self.properties.update({"CENTER_X": int(self.window.properties["CENTER_X"])})
+        self.properties.update({"CENTER_Y": int(self.properties["START_Y"] + (self.properties["ORDER_NUM"] - 1) * (self.properties["HEIGHT"] + self.properties["Y_GAP"]))})
 
-        # Destination coords
-        top_left_button_x = int(center_x - self.properties["WIDTH"]/2)
-        top_left_button_y = int(center_y - self.properties["HEIGHT"]/2)
+         # Destination coords
+        self.properties.update({"TOP_LEFT_BUTTON_X": int(self.properties["CENTER_X"] - self.properties["WIDTH"]/2)})
+        self.properties.update({"TOP_LEFT_BUTTON_Y": int(self.properties["CENTER_Y"] - self.properties["HEIGHT"]/2)})
 
         # Create a new surface for the button's rectangle
         self.button_surface = pg.Surface((self.properties["WIDTH"], self.properties["HEIGHT"]))
@@ -50,9 +43,15 @@ class Button():
         # Create a collision box in top left corner
         self.collision_box = pg.Rect(0, 0, self.properties["WIDTH"], self.properties["HEIGHT"])
         # Move to the correct location. "move_ip" treats the button as a mutable type
-        self.collision_box.move_ip(center_x - self.properties["WIDTH"]/2, center_y - self.properties["HEIGHT"]/2)
+        self.collision_box.move_ip(self.properties["TOP_LEFT_BUTTON_X"], self.properties["TOP_LEFT_BUTTON_Y"])
 
-        # Color the button, invert if pressed
+        # Button font
+        font_folder = paths.get_font_folder()
+        self.font = pg.font.Font(font_folder + "Gamy-PERSONAL.otf", self.properties["FONT_SIZE"])
+
+    def draw(self):
+        """Draw a button on screen with default size and colors, with given text and center coordinates."""
+        # Color the button based on the pressed state
         if self.is_pressed():
             fill_color = self.properties["PRESSED_BUTTON_COLOR"]
         else:
@@ -61,12 +60,12 @@ class Button():
         self.button_surface.fill(fill_color)
 
         # Draw the button's text onto the button
-        self.draw_text((top_left_button_x, top_left_button_y))
+        self.draw_text()
 
         # Draw button to display surface
-        self.window.display_surface.blit(self.button_surface, (top_left_button_x, top_left_button_y))
+        self.window.display_surface.blit(self.button_surface, (self.properties["TOP_LEFT_BUTTON_X"], self.properties["TOP_LEFT_BUTTON_Y"]))
 
-    def draw_text(self, coords):
+    def draw_text(self):
         """Draws the button text onto the center of the button."""
 
         if self.is_pressed():
