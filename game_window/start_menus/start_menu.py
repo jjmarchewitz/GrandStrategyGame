@@ -1,6 +1,5 @@
 ##########################################################################
-# Main menu: handles main menu and sub-menus
-# TODO: Rename to start menu
+# Start menu: handles main menu and sub-menus
 ##########################################################################
 
 import pygame as pg
@@ -99,6 +98,7 @@ class StartMenu():
         if self.state_manager.state == self.state_manager.start_menu["MAIN"]:
             self.check_start_menu_buttons()
         elif self.state_manager.state == self.state_manager.start_menu["SP"]:
+            # TODO: replace with a sub-menu instead of a direct call to start the game
             pass
         elif self.state_manager.state == self.state_manager.start_menu["HOST"]:
             pass
@@ -125,8 +125,8 @@ class StartMenu():
 
         # Check that the event was created and that it isn't already in the queue.
         # Pump = False prevents the queue from being processed by this operation.
-
         if event != None and pg.event.peek(event.type, pump=False) != 1:
+            # Post event to the end of the queue
             pg.event.post(event)
 
 
