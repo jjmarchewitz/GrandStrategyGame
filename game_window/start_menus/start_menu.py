@@ -6,10 +6,21 @@ import pygame as pg
 from pygame.event import pump
 import engine.file_paths as paths
 import textwrap
+from dataclasses import dataclass, field
 from engine.events.event_handler import EventHandler
 from engine.state_manager import StateManager
-from game_window.window import Window
+from game_window.window import Window, WindowProperties
 from .button import Button
+
+@dataclass
+class StartMenuProperties():
+    window = Window.get_instance()
+    background_color: tuple[int, int, int] = (25, 205, 255)
+    title_text: str = "GEARS OF HALO THEFT AUTO 5"
+    title_color: tuple[int, int, int] = (50, 50, 50)
+    title_center_x: int = window.properties.center_x
+    title_center_y: int = int(1.5*window.properties.height_unit)
+    title_font_size: int = int(1.15*window.properties.height_unit)
 
 class StartMenu():  
     # Singleton instance
@@ -30,14 +41,7 @@ class StartMenu():
         self.window = Window.get_instance()
 
         # Main menu properties
-        self.properties = {
-            "BACKGROUND": (25, 205, 255),
-            "TITLE_TEXT": "GEARS OF HALO THEFT AUTO 5",
-            "TITLE_CENTER_X": self.window.properties["CENTER_X"],
-            "TITLE_CENTER_Y": int(1.5*self.window.properties["HEIGHT_UNIT"]),
-            "TITLE_FONT_SIZE": int(1.15* self.window.properties["HEIGHT_UNIT"]),
-            "TITLE_COLOR": (50, 50, 50),
-        }
+        self.properties = StartMenuProperties()
 
         self.menus = {
             "MAIN": "MAIN",
@@ -59,7 +63,7 @@ class StartMenu():
 
         # Title font
         font_folder = paths.get_font_folder()
-        self.title_font = pg.font.Font(font_folder + "Halo3.ttf", self.properties["TITLE_FONT_SIZE"])
+        self.title_font = pg.font.Font(font_folder + "Halo3.ttf", self.properties.title_font_size)
 
     def start_menu(self, current_event):
         """Execute the main menu logic, including calling any sub-menus."""
@@ -136,7 +140,7 @@ class StartMenu():
         This gets called in a loop and if statements can be used to perform actions once per frame.
         """
         # Blue background
-        self.window.display_surface.fill(self.properties["BACKGROUND"])
+        self.window.display_surface.fill(self.properties.background_color)
 
         # Game title
         self.draw_title_text()
@@ -149,25 +153,25 @@ class StartMenu():
     def draw_title_text(self):
         """Draws the title text onto the main menu screen."""
         # TODO update so that the wrap works with all text by adding words on one by one. "Motherfucker" on a 600x600 will break the current version.
-        wrapped_title_text_lines = textwrap.fill(self.properties["TITLE_TEXT"], 12).split("\n")
+        wrapped_title_text_lines = textwrap.fill(self.properties.title_text, 12).split("\n")
         number_of_lines = len(wrapped_title_text_lines)
         line_height = self.title_font.size(wrapped_title_text_lines[0])[1]
 
-        title_surface = pg.Surface((self.window.properties["WIDTH"], number_of_lines * line_height))
+        title_surface = pg.Surface((self.window.properties.width, number_of_lines * line_height))
         black = (0, 0, 0)
         title_surface.fill(black)
         title_surface.set_colorkey(black)
 
         for line_number, line in enumerate(wrapped_title_text_lines):
-            text_surface = self.title_font.render(line, True, self.properties["TITLE_COLOR"])
+            text_surface = self.title_font.render(line, True, self.properties.title_color)
 
-            top_left_x = int(self.window.properties["WIDTH"]/2 - text_surface.get_width()/2)
+            top_left_x = int(self.window.properties.width/2 - text_surface.get_width()/2)
             top_left_y = line_number * text_surface.get_height()
 
             title_surface.blit(text_surface, (top_left_x, top_left_y))
         
 
-        top_left_x = int(self.window.properties["WIDTH"]/2 - title_surface.get_width()/2)
+        top_left_x = int(self.window.properties.width/2 - title_surface.get_width()/2)
         top_left_y = 0
 
         self.window.display_surface.blit(title_surface, (top_left_x, top_left_y))
