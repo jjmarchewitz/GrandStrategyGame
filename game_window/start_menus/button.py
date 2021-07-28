@@ -2,11 +2,12 @@
 # Button: A class for main menu buttons
 ##########################################################################
 
-import pygame as pg
 import engine.file_paths as paths
+import pygame as pg
+import os
 from dataclasses import dataclass, field
-from pygame.locals import *
 from game_window.window import Window
+from pygame.locals import *
 
 @dataclass
 class ButtonProperties():
@@ -58,8 +59,8 @@ class Button():
         self.collision_box.move_ip(self.properties.top_left_x, self.properties.top_left_y)
 
         # Button font
-        font_folder = paths.get_font_folder()
-        self.font = pg.font.Font(font_folder + "Gamy-PERSONAL.otf", self.properties.font_size)
+        font_file_path = os.path.join(paths.get_font_folder(), "Gamy-PERSONAL.otf")
+        self.font = pg.font.Font(font_file_path, self.properties.font_size)
 
     def draw(self):
         """Draw a button on screen with default size and colors, with given text and center coordinates."""

@@ -2,15 +2,17 @@
 # Start menu: handles main menu and sub-menus
 ##########################################################################
 
-import pygame as pg
-from pygame.event import pump
 import engine.file_paths as paths
+import os
+import pygame as pg
 import textwrap
+from .button import Button
+from .menu import Menu
 from dataclasses import dataclass, field
 from engine.events.event_handler import EventHandler
 from engine.state_manager import StateManager
 from game_window.window import Window, WindowProperties
-from .button import Button
+from pygame.event import pump
 
 @dataclass
 class StartMenuProperties():
@@ -21,6 +23,7 @@ class StartMenuProperties():
     title_center_x: int = window.properties.center_x
     title_center_y: int = int(1.5*window.properties.height_unit)
     title_font_size: int = int(1.15*window.properties.height_unit)
+
 
 class StartMenu():  
     # Singleton instance
@@ -62,8 +65,8 @@ class StartMenu():
         }
 
         # Title font
-        font_folder = paths.get_font_folder()
-        self.title_font = pg.font.Font(font_folder + "Halo3.ttf", self.properties.title_font_size)
+        font_file_path = os.path.join(paths.get_font_folder(), "Halo3.ttf")
+        self.title_font = pg.font.Font(font_file_path, self.properties.title_font_size)
 
     def start_menu(self, current_event):
         """Execute the main menu logic, including calling any sub-menus."""
