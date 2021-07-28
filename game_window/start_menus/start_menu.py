@@ -152,7 +152,7 @@ class StartMenu():
 
     def draw_title_text(self):
         """Draws the title text onto the main menu screen."""
-        # TODO update so that the wrap works with all text by adding words on one by one. "Motherfucker" on a 600x600 will break the current version.
+        # TODO: update so that the wrap works with all text by adding words on one by one. "Motherfucker" on a 600x600 will break the current version.
         wrapped_title_text_lines = textwrap.fill(self.properties.title_text, 12).split("\n")
         number_of_lines = len(wrapped_title_text_lines)
         line_height = self.title_font.size(wrapped_title_text_lines[0])[1]

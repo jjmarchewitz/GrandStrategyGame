@@ -3,7 +3,7 @@ Entry-point to the program, execute using
 
 > python main.py
 
-TODO Update if any arguments are needed
+TODO: Update if any arguments are needed
 """
 
 from engine.events.event_handler import EventHandler
