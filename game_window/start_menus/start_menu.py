@@ -7,7 +7,7 @@ import os
 import pygame as pg
 import textwrap
 from .button import Button
-from .menu import Menu
+from .menus import Menu
 from dataclasses import dataclass, field
 from engine.events.event_handler import EventHandler
 from engine.state_manager import StateManager
