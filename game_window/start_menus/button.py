@@ -55,33 +55,46 @@ class Button():
         # Move to the correct location. "move_ip" treats the button as a mutable type
         self.collision_box.move_ip(self.properties.top_left_x, self.properties.top_left_y)
 
+        # Make the button's function to call on a press an instance variable
+        self.function = function
+
+        # Boolean representing if the button is pressed
+        self.pressed = False
+
         # Button font
         font_file_path = os.path.join(paths.get_font_folder(), "Gamy-PERSONAL.otf")
         self.font = pg.font.Font(font_file_path, self.properties.font_size)
 
+    def check(self):
+        """Update the button's state and run code accordingly."""
+        previous_pressed_state = self.pressed
+        currently_pressed = self.is_pressed()
+
+        if self.was_pressed(previous_pressed_state, currently_pressed):
+            self.draw()
+        elif self.was_released(previous_pressed_state, currently_pressed):
+            self.draw()
+
     def draw(self):
         """Draw a button on screen with default size and colors, with given text and center coordinates."""
         # Color the button based on the pressed state
-        if self.is_pressed():
+        if self.pressed:
             fill_color = self.properties.pressed_button_color
+            text_color = self.properties.pressed_text_color
         else:
             fill_color = self.properties.unpressed_button_color
+            text_color = self.properties.unpressed_text_color
 
         self.button_surface.fill(fill_color)
 
         # Draw the button's text onto the button
-        self.draw_text()
+        self.draw_text(text_color)
 
         # Draw button to display surface
         self.window.display_surface.blit(self.button_surface, (self.properties.top_left_x, self.properties.top_left_y))
 
-    def draw_text(self):
+    def draw_text(self, text_color):
         """Draws the button text onto the center of the button."""
-
-        if self.is_pressed():
-            text_color = self.properties.pressed_text_color
-        else:
-            text_color = self.properties.unpressed_text_color
 
         text_surface = self.font.render(self.properties.text, True, text_color)
 
@@ -97,8 +110,29 @@ class Button():
         mouse_location = pg.mouse.get_pos()
         mouse_in_collision_box = self.collision_box.collidepoint(mouse_location)
 
-        return mouse_pressed and mouse_in_collision_box
+        self.pressed = mouse_pressed and mouse_in_collision_box
 
-    def was_released(self):
+        return self.pressed
+
+    def was_released(self, previous_pressed_state, currently_pressed):
         """Returns true if the left mouse button is released from pressing the button"""
-        pass
+
+        released = False
+        if previous_pressed_state == True and currently_pressed == False:
+            released = True
+            print(self.function)
+            self.function()
+
+        return released
+
+    def was_pressed(self, previous_pressed_state, currently_pressed):
+        """Returns true if the left mouse button just started pressing the button"""
+
+        just_pressed = False
+        if previous_pressed_state == False and currently_pressed == True:
+            just_pressed = True
+
+        return just_pressed
+
+
+        

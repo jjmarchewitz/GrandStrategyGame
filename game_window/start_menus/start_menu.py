@@ -57,11 +57,17 @@ class StartMenu():
 
         # Main menu buttons
         self.buttons = {
-            "SP": Button("SINGLE PLAYER", None, (self.button_coords_from_order(1))),
+            "SP": Button(
+                "SINGLE PLAYER",
+                lambda: pg.event.post(self.event_handler.create_event("START_MENU", {"MENU_NAME": "SP"})),
+                (self.button_coords_from_order(1))),
             "HOST": Button("HOST", None, (self.button_coords_from_order(2))),
             "JOIN": Button("JOIN", None, (self.button_coords_from_order(3))),
             "OPTIONS": Button("OPTIONS", None, (self.button_coords_from_order(4))),
-            "QUIT": Button("QUIT", None, (self.button_coords_from_order(5))),
+            "QUIT": Button(
+                "QUIT",
+                lambda: pg.event.post(pg.event.Event(pg.QUIT)),
+                (self.button_coords_from_order(5))),
         }
 
         # Title font
@@ -77,42 +83,48 @@ class StartMenu():
 
         return (pos_x, pos_y)
 
-    def start_menu(self, current_event):
+    def start_menu(self, current_event = None):
         """Execute the main menu logic, including calling any sub-menus."""
 
         # Check if the current event is a start menu change
-        if self.event_handler.custom_types["START_MENU"].pygame_id == current_event.type:
-            self.window.clear()
+        if current_event != None:
+            if self.event_handler.custom_types["START_MENU"].pygame_id == current_event.type:
+                self.window.clear()
+                self.draw_start_menu()
 
-            # Update the menu to be the correct one
-            self.update_menu(current_event)
-
-        # Check the current menu's buttons for updates
-        self.check_buttons()
+        # Update the menu to be the correct one
+        self.update_menu(current_event)
 
     def update_menu(self, current_event):
         """Check the current event against each menu type and display the appropriate one if required."""
-        # Main menu
-        if self.menus["MAIN"] == current_event.__dict__["MENU_NAME"]:
-            self.state_manager.update_state(self.state_manager.start_menu["MAIN"])
-            self.draw_start_menu()
-        # Start a new singleplayer
-        elif self.menus["SP"] == current_event.__dict__["MENU_NAME"]:
-            self.state_manager.update_state(self.state_manager.start_menu["SP"])
-        # Host a new multiplayer
-        elif self.menus["HOST"] == current_event.__dict__["MENU_NAME"]:
-            self.state_manager.update_state(self.state_manager.start_menu["HOST"])
-        # Join a new multiplayer
-        elif self.menus["JOIN"] == current_event.__dict__["MENU_NAME"]:
-            self.state_manager.update_state(self.state_manager.start_menu["JOIN"])
-        # Options menu
-        elif self.menus["OPTIONS"] == current_event.__dict__["MENU_NAME"]:
-            self.state_manager.update_state(self.state_manager.start_menu["OPTIONS"])
+        # # Main menu
+        # if self.menus["MAIN"] == current_event.__dict__["MENU_NAME"]:
+        #     self.state_manager.update_state(self.state_manager.start_menu["MAIN"])
+            
+        # # Start a new singleplayer
+        # elif self.menus["SP"] == current_event.__dict__["MENU_NAME"]:
+        #     self.state_manager.update_state(self.state_manager.start_menu["SP"])
+        # # Host a new multiplayer
+        # elif self.menus["HOST"] == current_event.__dict__["MENU_NAME"]:
+        #     self.state_manager.update_state(self.state_manager.start_menu["HOST"])
+        # # Join a new multiplayer
+        # elif self.menus["JOIN"] == current_event.__dict__["MENU_NAME"]:
+        #     self.state_manager.update_state(self.state_manager.start_menu["JOIN"])
+        # # Options menu
+        # elif self.menus["OPTIONS"] == current_event.__dict__["MENU_NAME"]:
+        #     self.state_manager.update_state(self.state_manager.start_menu["OPTIONS"])
+
+        # Check the current menu's buttons for updates
+        # breakpoint()
+        # self.check_buttons()
+        self.check_start_menu_buttons()
+        
 
     def check_buttons(self):
         """Check the current menu state and call the appropriate button check function."""
         if self.state_manager.state == self.state_manager.start_menu["MAIN"]:
             self.check_start_menu_buttons()
+            pass
         elif self.state_manager.state == self.state_manager.start_menu["SP"]:
             # TODO: replace with a sub-menu instead of a direct call to start the game
             pass
@@ -125,25 +137,31 @@ class StartMenu():
 
     def check_start_menu_buttons(self):
         """Check the start menu buttons and post an event to the queue if pressed."""
-        event = None
 
-        # If any of the buttons were pressed, create the corresponding event
-        if self.buttons["SP"].is_pressed():
-            event = self.event_handler.create_event("START_MENU", {"MENU_NAME": "SP"})
-        elif self.buttons["HOST"].is_pressed():
-            event = self.event_handler.create_event("START_MENU", {"MENU_NAME": "HOST"})
-        elif self.buttons["JOIN"].is_pressed():
-            event = self.event_handler.create_event("START_MENU", {"MENU_NAME": "JOIN"})
-        elif self.buttons["OPTIONS"].is_pressed():
-            event = self.event_handler.create_event("START_MENU", {"MENU_NAME": "OPTIONS"})
-        elif self.buttons["QUIT"].is_pressed():
-            event = pg.event.Event(pg.QUIT)
+        # Draw buttons
+        for name, button in self.buttons.items():
+            button.check()
 
-        # Check that the event was created and that it isn't already in the queue.
-        # Pump = False prevents the queue from being processed by this operation.
-        if event != None and pg.event.peek(event.type, pump=False) != 1:
-            # Post event to the end of the queue
-            pg.event.post(event)
+
+        # event = None
+
+        # # If any of the buttons were pressed, create the corresponding event
+        # if self.buttons["SP"].is_pressed():
+        #     event = self.event_handler.create_event("START_MENU", {"MENU_NAME": "SP"})
+        # elif self.buttons["HOST"].is_pressed():
+        #     event = self.event_handler.create_event("START_MENU", {"MENU_NAME": "HOST"})
+        # elif self.buttons["JOIN"].is_pressed():
+        #     event = self.event_handler.create_event("START_MENU", {"MENU_NAME": "JOIN"})
+        # elif self.buttons["OPTIONS"].is_pressed():
+        #     event = self.event_handler.create_event("START_MENU", {"MENU_NAME": "OPTIONS"})
+        # elif self.buttons["QUIT"].is_pressed():
+        #     event = pg.event.Event(pg.QUIT)
+
+        # # Check that the event was created and that it isn't already in the queue.
+        # # Pump = False prevents the queue from being processed by this operation.
+        # if event != None and pg.event.peek(event.type, pump=False) != 1:
+        #     # Post event to the end of the queue
+        #     pg.event.post(event)
 
 
     def draw_start_menu(self):
