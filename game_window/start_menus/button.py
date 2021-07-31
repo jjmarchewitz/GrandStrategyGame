@@ -13,18 +13,15 @@ from pygame.locals import *
 class ButtonProperties():
     window = Window.get_instance()
     text: str
-    order_num: int
+    center_x: int
+    center_y: int
 
     # Size and positional
     width: int = 6*window.properties.width_unit
     height: int = window.properties.height_unit
-    start_y: int = 4*window.properties.height_unit
-    y_gap: int = int(0.75*window.properties.height_unit)
     font_size: int = int(0.75*window.properties.height_unit)
 
-    # Important coordinates
-    center_x: int = window.properties.center_x
-    center_y: int = field(init=False)
+    # Top left coordinates
     top_left_x: int = field(init=False)
     top_left_y: int = field(init=False)
 
@@ -36,19 +33,19 @@ class ButtonProperties():
 
     # Update coordinate values once class has been initialized
     def __post_init__(self):
-        self.center_y = self.start_y + (self.order_num - 1) * (self.height + self.y_gap)
+        #self.center_y = self.start_y + (self.order_num - 1) * (self.height + self.y_gap)
         self.top_left_x = self.center_x - self.width/2
         self.top_left_y = self.center_y - self.height/2
 
 
 class Button():
 
-    def __init__(self, text, order_num):
+    def __init__(self, text, function, center_coords):
         # Singleton instances
         self.window = Window.get_instance()
 
         # Main menu button constants
-        self.properties = ButtonProperties(text, order_num)
+        self.properties = ButtonProperties(text, center_coords[0], center_coords[1])
 
         # Create a new surface for the button's rectangle
         self.button_surface = pg.Surface((self.properties.width, self.properties.height))
@@ -101,3 +98,7 @@ class Button():
         mouse_in_collision_box = self.collision_box.collidepoint(mouse_location)
 
         return mouse_pressed and mouse_in_collision_box
+
+    def was_released(self):
+        """Returns true if the left mouse button is released from pressing the button"""
+        pass

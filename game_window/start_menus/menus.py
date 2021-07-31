@@ -7,11 +7,11 @@ from .button import Button
 
 class Menu():
 
-    def __init__(self, button=None):
+    def __init__(self):
         pass
 
     def draw(self):
         pass
 
-    def add_button(self, function):
+    def add_button(self, button):
         pass

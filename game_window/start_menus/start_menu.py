@@ -6,7 +6,7 @@ import engine.file_paths as paths
 import os
 import pygame as pg
 import textwrap
-from .button import Button
+from .button import Button, ButtonProperties
 from .menus import Menu
 from dataclasses import dataclass, field
 from engine.events.event_handler import EventHandler
@@ -57,16 +57,25 @@ class StartMenu():
 
         # Main menu buttons
         self.buttons = {
-            "SP": Button("SINGLE PLAYER", 1),
-            "HOST": Button("HOST", 2),
-            "JOIN": Button("JOIN", 3),
-            "OPTIONS": Button("OPTIONS", 4),
-            "QUIT": Button("QUIT", 5),
+            "SP": Button("SINGLE PLAYER", None, (self.button_coords_from_order(1))),
+            "HOST": Button("HOST", None, (self.button_coords_from_order(2))),
+            "JOIN": Button("JOIN", None, (self.button_coords_from_order(3))),
+            "OPTIONS": Button("OPTIONS", None, (self.button_coords_from_order(4))),
+            "QUIT": Button("QUIT", None, (self.button_coords_from_order(5))),
         }
 
         # Title font
         font_file_path = os.path.join(paths.get_font_folder(), "Halo3.ttf")
         self.title_font = pg.font.Font(font_file_path, self.properties.title_font_size)
+
+    def button_coords_from_order(self, order_num):
+        pos_x = self.window.properties.center_x
+
+        start_y = 4 * self.window.properties.height_unit
+        spacing_y = ButtonProperties.height + int(0.75 * self.window.properties.height_unit)
+        pos_y = start_y + (order_num - 1) * spacing_y
+
+        return (pos_x, pos_y)
 
     def start_menu(self, current_event):
         """Execute the main menu logic, including calling any sub-menus."""
