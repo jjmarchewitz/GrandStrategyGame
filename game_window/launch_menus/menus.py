@@ -2,10 +2,12 @@
 Start menu: handles main menu and sub-menus
 """
 
+import engine.file_paths as paths
 import pygame as pg
+import os
 import textwrap
-# TODO: Import dataclass
-from .button import Button
+from .button import Button, ButtonProperties
+from dataclasses import dataclass, field
 from game_window.window import Window
 
 class Menu():
@@ -30,7 +32,7 @@ class Menu():
         self.buttons.update({name: button})
 
 @dataclass
-class StartMenuProperties():
+class MainMenuProperties():
     window = Window.get_instance()
     background_color: tuple[int, int, int] = (25, 205, 255)
     title_text: str = "GEARS OF HALO THEFT AUTO 5"
@@ -39,7 +41,7 @@ class StartMenuProperties():
     title_center_y: int = int(1.875*window.properties.height_unit)
     title_font_size: int = int(1.15*window.properties.height_unit)
     
-class StartMenu(Menu):
+class MainMenu(Menu):
 
     def __init__(self):
         self.add_button(
@@ -82,6 +84,19 @@ class StartMenu(Menu):
                 (self.button_coords_from_order(5))
             )
         )
+        
+        # Title font
+        font_file_path = os.path.join(paths.get_font_folder(), "MoNOCOQUE.ttf")
+        self.title_font = pg.font.Font(font_file_path, self.properties.title_font_size)
+        
+    def button_coords_from_order(self, order_num):
+        pos_x = self.window.properties.center_x
+
+        start_y = 4 * self.window.properties.height_unit
+        spacing_y = ButtonProperties.height + int(0.75 * self.window.properties.height_unit)
+        pos_y = start_y + (order_num - 1) * spacing_y
+
+        return (pos_x, pos_y)
         
     def draw_title(self):
         """"""

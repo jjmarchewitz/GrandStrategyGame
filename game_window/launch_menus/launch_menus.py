@@ -2,20 +2,17 @@
 Start menu: handles main menu and sub-menus
 """
 
-import engine.file_paths as paths
-import os
+import menus
 import pygame as pg
 import textwrap
 from .button import Button, ButtonProperties
-from .menus import Menu
-from dataclasses import dataclass, field
 from engine.events.event_handler import EventHandler
 from engine.state_manager import StateManager
 from game_window.window import Window, WindowProperties
 from pygame.event import pump
 
 
-class StartMenu():
+class LaunchMenu():
     # Singleton instance
     __instance = None
     def get_instance():
@@ -33,11 +30,11 @@ class StartMenu():
         self.state_manager = StateManager.get_instance()
         self.window = Window.get_instance()
 
-        # Main menu properties
-        self.properties = StartMenuProperties()
+        # # Main menu properties
+        # self.properties = StartMenuProperties()
 
         self.menus = {
-            "MAIN": "MAIN",
+            "MAIN": menus.MainMenu(),
             "SP": "SP",
             "HOST": "HOST",
             "JOIN": "JOIN",
@@ -45,58 +42,20 @@ class StartMenu():
             "QUIT": "QUIT",
         }
 
-        # Main menu buttons
-        self.buttons = {
-            "SP": Button(
-                "SINGLE PLAYER",
-                lambda: pg.event.post(self.event_handler.create_event("START_MENU", {"MENU_NAME": "SP"})),
-                (self.button_coords_from_order(1))
-                ),
-            "HOST": Button(
-                "HOST",
-                lambda: self.event_handler.create_event("START_MENU", {"MENU_NAME": "HOST"}),
-                (self.button_coords_from_order(2))
-                ),
-            "JOIN": Button(
-                "JOIN",
-                self.event_handler.create_event("START_MENU", {"MENU_NAME": "JOIN"}),
-                (self.button_coords_from_order(3))
-                ),
-            "OPTIONS": Button(
-                "OPTIONS",
-                self.event_handler.create_event("START_MENU", {"MENU_NAME": "OPTIONS"}),
-                (self.button_coords_from_order(4))
-                ),
-            "QUIT": Button(
-                "QUIT",
-                lambda: pg.event.post(pg.event.Event(pg.QUIT)),
-                (self.button_coords_from_order(5))),
-        }
+        self.current_menu = None
 
-        # Title font
-        font_file_path = os.path.join(paths.get_font_folder(), "MoNOCOQUE.ttf")
-        self.title_font = pg.font.Font(font_file_path, self.properties.title_font_size)
-
-    def button_coords_from_order(self, order_num):
-        pos_x = self.window.properties.center_x
-
-        start_y = 4 * self.window.properties.height_unit
-        spacing_y = ButtonProperties.height + int(0.75 * self.window.properties.height_unit)
-        pos_y = start_y + (order_num - 1) * spacing_y
-
-        return (pos_x, pos_y)
-
-    def start_menu(self, current_event = None):
+    def run(self, current_event = None):
         """Execute the main menu logic, including calling any sub-menus."""
 
         # Check if the current event is a start menu change
         if current_event != None:
             if self.event_handler.custom_types["START_MENU"].pygame_id == current_event.type:
                 self.window.clear()
-                self.draw_start_menu()
+                self.current_menu = self.menus["MAIN"]
+                self.current_menu.draw()
 
         # Update the menu to be the correct one
-        self.update_menu(current_event)
+        self.current_menu.check()
 
     def update_menu(self, current_event):
         """Check the current event against each menu type and display the appropriate one if required."""

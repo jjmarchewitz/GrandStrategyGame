@@ -9,7 +9,7 @@ TODO: Update if any arguments are needed
 import pygame as pg
 from engine.events.event_handler import EventHandler
 from game_window.window import Window
-from game_window.start_menus.start_menu import StartMenu
+from game_window.launch_menus.launch_menus import LaunchMenu
 
 
 class GameExecutor():
@@ -27,9 +27,10 @@ class GameExecutor():
         # Get singleton instances
         self.event_handler = EventHandler.get_instance()
         self.window = Window.get_instance()
-        self.start_menu = StartMenu.get_instance()
+        self.launch_menu = LaunchMenu.get_instance()
 
         # Set the game to open the start menu
+        # TODO: Update this "START_MENU" type to be "LAUNCH_MENU"
         main_menu_event = self.event_handler.create_event("START_MENU", {"MENU_NAME": "MAIN"})
         pg.event.post(main_menu_event)
 
