@@ -14,16 +14,6 @@ from engine.state_manager import StateManager
 from game_window.window import Window, WindowProperties
 from pygame.event import pump
 
-@dataclass
-class StartMenuProperties():
-    window = Window.get_instance()
-    background_color: tuple[int, int, int] = (25, 205, 255)
-    title_text: str = "GEARS OF HALO THEFT AUTO 5"
-    title_color: tuple[int, int, int] = (50, 50, 50)
-    title_center_x: int = window.properties.center_x
-    title_center_y: int = int(1.875*window.properties.height_unit)
-    title_font_size: int = int(1.15*window.properties.height_unit)
-
 
 class StartMenu():
     # Singleton instance
