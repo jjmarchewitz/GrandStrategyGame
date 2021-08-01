@@ -4,7 +4,12 @@
 
 import pygame as pg
 import collections
-from .custom_type import CustomType
+from dataclasses import dataclass, field
+
+@dataclass
+class CustomType():
+    pygame_id: int = pg.event.custom_type()
+    event_dict: dict = field(init=False)
 
 class EventHandler():
     # Singleton instance
@@ -20,19 +25,13 @@ class EventHandler():
             EventHandler.__instance = self
 
         # Define custom event types
-        start_menu = CustomType()
-        start_menu.event_dict = {
-            "MENU_NAME": None,
-            "BUTTON_STATES": None,
-        }
-        in_game_menu = CustomType()
-        in_game_menu.event_dict = {
-            "MENU_NAME": None,
+        type_update_game_state = CustomType()
+        type_update_game_state.event_dict = {
+            "STATE": None,
         }
 
         self.custom_types = {
-            "START_MENU": start_menu,
-            "IN_GAME_MENU": in_game_menu,
+            "UPDATE_GAME_STATE": type_update_game_state,
         }
 
     def get_event_dict(self, event_type):
@@ -59,3 +58,6 @@ class EventHandler():
         event = pg.event.Event(self.custom_types[event_type].pygame_id, complete_event_dict)
 
         return event
+    
+    def create_state_event(self, new_state):
+        return self.create_event("UPDATE_GAME_STATE", {"STATE": new_state})

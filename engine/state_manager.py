@@ -25,42 +25,40 @@ class StateManager():
         # If I attempted to set the state by typing the strings, a typo would possibly not be caught immediately, and cause a headache down the line.
         # By using this system, a typo in the code will return a "dictionary key not found" type of error and the game will not be able to run.
 
-        # Super-states
-        self.super = {
-            "QUIT": "QUIT",
-            "START_MENU": "START_MENU",
-            "GAME_RUNNING": "GAME_RUNNING",
+        # Game super states
+        self.super_states = {
+            "QUIT": 0,
+            "LAUNCH_MENU": 1,
+            "GAME_RUNNING": 2,
         }
-
-        # Main menu states
-        self.start_menu = {
-            "MAIN": "MAIN",
-            "SP": "SP",
-            "HOST": "HOST",
-            "JOIN": "JOIN",
-            "OPTIONS": "OPTIONS",
+        
+        # Launch menu states
+        self.launch_menu = {
+            "MAIN_MENU": 100,
+            "SP": 101,
+            "HOST": 102,
+            "JOIN": 103,
+            "OPTIONS": 104,
         }
-
-        # In-game states
-        self.game = {
-            "LOAD": "LOAD",
-            "PLAY": "PLAY",
-            "PAUSE": "PAUSE",
-            "PAUSE_MENU": "PAUSE_MENU",
-            "SAVING": "SAVING",
-            "EXIT_TO_MAIN": "EXIT_TO_MAIN",
+        
+        # In game states
+        self.in_game = {
+            "LOAD": 200,
+            "PLAY": 201,
+            "PAUSE": 202,
+            "PAUSE_MENU": 203,
+            "SAVING": 204,
+            "EXIT_TO_MAIN_MENU": 205,
         }
-
-        self.update_state(self.start_menu["MAIN"])
 
     def update_state(self, state):
         self.state = state
 
-        if self.state in self.super:
+        if self.state in self.super_states:
             self.super_state = self.state
-        elif self.state in self.start_menu:
-            self.super_state = self.super["START_MENU"]
-        elif self.state in self.game:
-            self.super_state = self.super["GAME_RUNNING"]
+        elif self.state in self.launch_menu_states:
+            self.super_state = self.super_states["LAUNCH_MENU"]
+        elif self.state in self.in_game_states:
+            self.super_state = self.super_states["GAME_RUNNING"]
         else:
             raise Exception("Invalid state name.")
