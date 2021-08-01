@@ -1,6 +1,6 @@
-##########################################################################
-# Button: A class for main menu buttons
-##########################################################################
+"""
+Button: A class for main menu buttons
+"""
 
 import engine.file_paths as paths
 import pygame as pg
@@ -33,7 +33,6 @@ class ButtonProperties():
 
     # Update coordinate values once class has been initialized
     def __post_init__(self):
-        #self.center_y = self.start_y + (self.order_num - 1) * (self.height + self.y_gap)
         self.top_left_x = self.center_x - self.width/2
         self.top_left_y = self.center_y - self.height/2
 
@@ -70,8 +69,10 @@ class Button():
         previous_pressed_state = self.pressed
         currently_pressed = self.is_pressed()
 
+        # If the button was pressed, redraw the button
         if self.was_pressed(previous_pressed_state, currently_pressed):
             self.draw()
+        # If the button was released, redraw the button
         elif self.was_released(previous_pressed_state, currently_pressed):
             self.draw()
 
@@ -120,7 +121,6 @@ class Button():
         released = False
         if previous_pressed_state == True and currently_pressed == False:
             released = True
-            print(self.function)
             self.function()
 
         return released
@@ -135,4 +135,3 @@ class Button():
         return just_pressed
 
 
-        

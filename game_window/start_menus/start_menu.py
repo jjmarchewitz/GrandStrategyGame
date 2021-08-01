@@ -1,6 +1,6 @@
-##########################################################################
-# Start menu: handles main menu and sub-menus
-##########################################################################
+"""
+Start menu: handles main menu and sub-menus
+"""
 
 import engine.file_paths as paths
 import os
@@ -21,11 +21,11 @@ class StartMenuProperties():
     title_text: str = "GEARS OF HALO THEFT AUTO 5"
     title_color: tuple[int, int, int] = (50, 50, 50)
     title_center_x: int = window.properties.center_x
-    title_center_y: int = int(1.5*window.properties.height_unit)
+    title_center_y: int = int(1.875*window.properties.height_unit)
     title_font_size: int = int(1.15*window.properties.height_unit)
 
 
-class StartMenu():  
+class StartMenu():
     # Singleton instance
     __instance = None
     def get_instance():
@@ -60,10 +60,23 @@ class StartMenu():
             "SP": Button(
                 "SINGLE PLAYER",
                 lambda: pg.event.post(self.event_handler.create_event("START_MENU", {"MENU_NAME": "SP"})),
-                (self.button_coords_from_order(1))),
-            "HOST": Button("HOST", None, (self.button_coords_from_order(2))),
-            "JOIN": Button("JOIN", None, (self.button_coords_from_order(3))),
-            "OPTIONS": Button("OPTIONS", None, (self.button_coords_from_order(4))),
+                (self.button_coords_from_order(1))
+                ),
+            "HOST": Button(
+                "HOST",
+                lambda: self.event_handler.create_event("START_MENU", {"MENU_NAME": "HOST"}),
+                (self.button_coords_from_order(2))
+                ),
+            "JOIN": Button(
+                "JOIN",
+                self.event_handler.create_event("START_MENU", {"MENU_NAME": "JOIN"}),
+                (self.button_coords_from_order(3))
+                ),
+            "OPTIONS": Button(
+                "OPTIONS",
+                self.event_handler.create_event("START_MENU", {"MENU_NAME": "OPTIONS"}),
+                (self.button_coords_from_order(4))
+                ),
             "QUIT": Button(
                 "QUIT",
                 lambda: pg.event.post(pg.event.Event(pg.QUIT)),
@@ -71,7 +84,7 @@ class StartMenu():
         }
 
         # Title font
-        font_file_path = os.path.join(paths.get_font_folder(), "Halo3.ttf")
+        font_file_path = os.path.join(paths.get_font_folder(), "MoNOCOQUE.ttf")
         self.title_font = pg.font.Font(font_file_path, self.properties.title_font_size)
 
     def button_coords_from_order(self, order_num):
@@ -98,27 +111,8 @@ class StartMenu():
     def update_menu(self, current_event):
         """Check the current event against each menu type and display the appropriate one if required."""
         # # Main menu
-        # if self.menus["MAIN"] == current_event.__dict__["MENU_NAME"]:
-        #     self.state_manager.update_state(self.state_manager.start_menu["MAIN"])
-            
-        # # Start a new singleplayer
-        # elif self.menus["SP"] == current_event.__dict__["MENU_NAME"]:
-        #     self.state_manager.update_state(self.state_manager.start_menu["SP"])
-        # # Host a new multiplayer
-        # elif self.menus["HOST"] == current_event.__dict__["MENU_NAME"]:
-        #     self.state_manager.update_state(self.state_manager.start_menu["HOST"])
-        # # Join a new multiplayer
-        # elif self.menus["JOIN"] == current_event.__dict__["MENU_NAME"]:
-        #     self.state_manager.update_state(self.state_manager.start_menu["JOIN"])
-        # # Options menu
-        # elif self.menus["OPTIONS"] == current_event.__dict__["MENU_NAME"]:
-        #     self.state_manager.update_state(self.state_manager.start_menu["OPTIONS"])
-
-        # Check the current menu's buttons for updates
-        # breakpoint()
-        # self.check_buttons()
         self.check_start_menu_buttons()
-        
+
 
     def check_buttons(self):
         """Check the current menu state and call the appropriate button check function."""
@@ -141,27 +135,6 @@ class StartMenu():
         # Draw buttons
         for name, button in self.buttons.items():
             button.check()
-
-
-        # event = None
-
-        # # If any of the buttons were pressed, create the corresponding event
-        # if self.buttons["SP"].is_pressed():
-        #     event = self.event_handler.create_event("START_MENU", {"MENU_NAME": "SP"})
-        # elif self.buttons["HOST"].is_pressed():
-        #     event = self.event_handler.create_event("START_MENU", {"MENU_NAME": "HOST"})
-        # elif self.buttons["JOIN"].is_pressed():
-        #     event = self.event_handler.create_event("START_MENU", {"MENU_NAME": "JOIN"})
-        # elif self.buttons["OPTIONS"].is_pressed():
-        #     event = self.event_handler.create_event("START_MENU", {"MENU_NAME": "OPTIONS"})
-        # elif self.buttons["QUIT"].is_pressed():
-        #     event = pg.event.Event(pg.QUIT)
-
-        # # Check that the event was created and that it isn't already in the queue.
-        # # Pump = False prevents the queue from being processed by this operation.
-        # if event != None and pg.event.peek(event.type, pump=False) != 1:
-        #     # Post event to the end of the queue
-        #     pg.event.post(event)
 
 
     def draw_start_menu(self):
@@ -199,9 +172,9 @@ class StartMenu():
             top_left_y = line_number * text_surface.get_height()
 
             title_surface.blit(text_surface, (top_left_x, top_left_y))
-        
 
-        top_left_x = int(self.window.properties.width/2 - title_surface.get_width()/2)
-        top_left_y = 0
+
+        top_left_x = int(self.properties.title_center_x - title_surface.get_width()/2)
+        top_left_y = int(self.properties.title_center_y - title_surface.get_height()/2)
 
         self.window.display_surface.blit(title_surface, (top_left_x, top_left_y))

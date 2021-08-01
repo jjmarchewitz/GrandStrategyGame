@@ -1,12 +1,14 @@
-##########################################################################
-# Window: handles resolution, fullscreen toggle, and display object
-##########################################################################
+"""
+Window: handles resolution, fullscreen toggle, and display object
+"""
 
-import pygame as pg
 from dataclasses import dataclass, field
+import pygame as pg
+
 
 @dataclass
 class WindowProperties():
+    """Properties list of a window object."""
     name: str
     fullscreen: bool
     width: int
@@ -20,7 +22,7 @@ class WindowProperties():
         self.height_unit = self.height/12
         self.center_x = self.width/2
         self.center_y = self.height/2
-    
+
 
 class Window():
     """Wrapper around all display functions."""
@@ -59,5 +61,5 @@ class Window():
         pg.display.set_caption(self.properties.name)
 
     def clear(self):
-        # Fill screen with black
+        """Fill screen with black."""
         self.display_surface.fill((0, 0, 0))

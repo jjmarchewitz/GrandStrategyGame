@@ -6,20 +6,21 @@ Entry-point to the program, execute using
 TODO: Update if any arguments are needed
 """
 
-from engine.events.event_handler import EventHandler
 import pygame as pg
+from engine.events.event_handler import EventHandler
 from game_window.window import Window
 from game_window.start_menus.start_menu import StartMenu
 
 
 class GameExecutor():
     """Highest-level instance of the game."""
+    # TODO: Move state manager to be a dataclass instance inside of this class
 
     def __init__(self):
         """Defining class constants and variables, calling main()."""
 
         # Initialize pygame objects
-        pg.init()
+        # pg.init()
         pg.display.init()
         pg.font.init()
 
@@ -45,7 +46,7 @@ class GameExecutor():
         while True:
             # Get the newest event from the queue
             current_event = pg.event.poll()
-            
+
             # If the event is a quit event, immediately break
             if current_event.type == pg.QUIT:
                 break
@@ -55,15 +56,15 @@ class GameExecutor():
 
             # Update the display and queue
             pg.display.flip()
-            
+
         # Quit pygame
         self.exit_program()
 
     def exit_program(self):
-        """Fully closes the game, anything that needs to be done before shutdown should happen here."""
+        """Fully closes the game, anything before shutdown should happen here."""
         pg.quit()
 
-    
+
 
 
 # Keep at the bottom of the script
