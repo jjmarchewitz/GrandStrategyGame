@@ -59,5 +59,5 @@ class EventHandler():
 
         return event
     
-    def create_state_event(self, new_state):
-        return self.create_event("UPDATE_GAME_STATE", {"STATE": new_state})
+    def create_and_push_state_event(self, new_state):
+        pg.event.post(self.create_event("UPDATE_GAME_STATE", {"STATE": new_state}))

@@ -26,8 +26,6 @@ class Menu():
         """Draw the menu."""
         for _, value in self.buttons.items():
             value.draw()
-
-        self.draw_title()
         
     def add_button(self, name, button):
         """Add a button to the menu to be drawn."""
@@ -37,10 +35,6 @@ class Menu():
         """Check all buttons for being pressed and run their functions if needed."""
         for _, value in self.buttons.items():
             value.check()
-
-    def draw_title(self):
-        """To be overwritten."""
-        print("draw_title() method still needs to be overwritten")
     
 
 @dataclass
@@ -66,7 +60,7 @@ class MainMenu(Menu):
             "SP",
             Button(
                 "SINGLE PLAYER",
-                lambda: self.event_handler.create_state_event(self.state_manager.launch_menu["SP"]),
+                lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["SP"]),
                 (self.button_coords_from_order(1))
                 )
             )
@@ -74,7 +68,7 @@ class MainMenu(Menu):
             "HOST",
             Button(
                 "HOST",
-                lambda: self.event_handler.create_state_event(self.state_manager.launch_menu["HOST"]),
+                lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["HOST"]),
                 (self.button_coords_from_order(2))
             )
         )
@@ -82,7 +76,7 @@ class MainMenu(Menu):
             "JOIN",
             Button(
                 "JOIN",
-                lambda: self.event_handler.create_state_event(self.state_manager.launch_menu["JOIN"]),
+                lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["JOIN"]),
                 (self.button_coords_from_order(3))
             )
         )
@@ -90,7 +84,7 @@ class MainMenu(Menu):
             "OPTIONS",
             Button(
                 "OPTIONS",
-                lambda: self.event_handler.create_state_event(self.state_manager.launch_menu["OPTIONS"]),
+                lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["OPTIONS"]),
                 (self.button_coords_from_order(4))
             )
         )
@@ -117,6 +111,7 @@ class MainMenu(Menu):
         """Draw the main menu."""
         # Blue background
         self.window.display_surface.fill(self.properties.background_color)
+        self.draw_title()
         super().draw()
         
     def draw_title(self):
@@ -172,7 +167,13 @@ class DummyMenu(Menu):
             "EXIT_TO_MAIN",
             Button(
                 "BACK TO MAIN",
-                lambda: self.event_handler.create_state_event(self.state_manager.launch_menu["MAIN_MENU"]),
+                lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["MAIN_MENU"]),
                 (self.window.properties.center_x, self.window.properties.center_y)
             )
         )
+        
+    def draw(self):
+        """Draw the dummy menu."""
+        # Fill background
+        self.window.display_surface.fill(self.properties.background_color)
+        super().draw()

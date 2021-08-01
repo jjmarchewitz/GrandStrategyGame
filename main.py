@@ -31,8 +31,7 @@ class GameExecutor():
         self.window = Window.get_instance()
 
         # Set the game to open the start menu
-        main_menu_event = self.event_handler.create_state_event(self.state_manager.launch_menu["MAIN_MENU"])
-        pg.event.post(main_menu_event)
+        self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["MAIN_MENU"])
 
         # Turn off repeated key input
         pg.key.set_repeat()

@@ -41,7 +41,7 @@ class Window():
 
         # Window constants
         self.properties = WindowProperties("Game", False, 600, 600)
-        #self.properties = WindowProperties("Game", True, 1440, 900)
+        # self.properties = WindowProperties("Game", True, 1440, 900)
 
         pg.init()
         pg.display.init()
