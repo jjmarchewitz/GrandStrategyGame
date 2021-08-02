@@ -6,7 +6,7 @@ from engine.state_manager import StateManager
 import pygame as pg
 from .menus import DummyMenu, MainMenu
 from engine.events.event_handler import EventHandler
-from game_window.window import Window
+from engine.display.window import Window
 
 
 class LaunchMenu():

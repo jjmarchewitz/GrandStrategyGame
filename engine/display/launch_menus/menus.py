@@ -8,9 +8,9 @@ import pygame as pg
 import os
 import textwrap
 from .button import Button, ButtonProperties
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from engine.events.event_handler import EventHandler
-from game_window.window import Window
+from engine.display.window import Window
 
 class Menu():
     """Base class for all menus"""
@@ -34,19 +34,25 @@ class Menu():
     def poll(self):
         """Check all buttons for being pressed and run their functions if needed."""
         for _, value in self.buttons.items():
-            value.check()
+            value.poll()
     
 
 @dataclass
 class MainMenuProperties():
     """Properties of the Main Menu"""
-    window = Window.get_instance()
     background_color: tuple[int, int, int] = (25, 205, 255)
     title_text: str = "GEARS OF HALO THEFT AUTO 5"
     title_color: tuple[int, int, int] = (50, 50, 50)
-    title_center_x: int = window.properties.center_x
-    title_center_y: int = int(1.875*window.properties.height_unit)
-    title_font_size: int = int(1.15*window.properties.height_unit)
+    title_center_x: int = field(init=False)
+    title_center_y: int = field(init=False)
+    title_font_size: int = field(init=False)
+    
+    def __post_init__(self):
+        window = Window.get_instance()
+        self.title_center_x = window.properties.center_x
+        self.title_center_y = int(1.875*window.properties.height_unit)
+        self.title_font_size = int(1.15*window.properties.height_unit)
+        
     
 class MainMenu(Menu):
     """The game's main menu, the first screen that can be interacted with after launch."""
@@ -110,7 +116,7 @@ class MainMenu(Menu):
         pos_x = self.window.properties.center_x
 
         start_y = 4 * self.window.properties.height_unit
-        spacing_y = ButtonProperties.height + int(0.75 * self.window.properties.height_unit)
+        spacing_y = self.window.properties.height_unit + int(0.75 * self.window.properties.height_unit)
         pos_y = start_y + (order_num - 1) * spacing_y
 
         return (pos_x, pos_y)
@@ -156,13 +162,18 @@ class MainMenu(Menu):
 
 @dataclass
 class DummyMenuProperties():
-    window = Window.get_instance()
     background_color: tuple[int, int, int] = (100, 100, 100)
     title_text: str = "Dummy Menu"
     title_color: tuple[int, int, int] = (50, 50, 50)
-    title_center_x: int = window.properties.center_x
-    title_center_y: int = int(1.875*window.properties.height_unit)
-    title_font_size: int = int(1.15*window.properties.height_unit)
+    title_center_x: int = field(init=False)
+    title_center_y: int = field(init=False)
+    title_font_size: int = field(init=False)
+    
+    def __post_init__(self):
+        window = Window.get_instance()
+        self.title_center_x = window.properties.center_x
+        self.title_center_y = int(1.875*window.properties.height_unit)
+        self.title_font_size = int(1.15*window.properties.height_unit)
 
 class DummyMenu(Menu):
     """Dummy menu to test functionality."""

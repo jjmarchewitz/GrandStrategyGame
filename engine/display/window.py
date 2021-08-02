@@ -46,7 +46,7 @@ class Window():
             Window()
         return Window.__instance
 
-    def __init__(self):
+    def __init__(self, is_fullscreen=False):
         if Window.__instance == None:
             Window.__instance = self
             
@@ -55,8 +55,7 @@ class Window():
             pg.display.init()
 
         # Window constants
-        #self.properties = WindowProperties("Game", False)
-        self.properties = WindowProperties("Game", True) #, 1440, 900)
+        self.properties = WindowProperties("Game", is_fullscreen)
 
         # Open a new window at the desired dimensions and set its properties
         if self.properties.fullscreen:

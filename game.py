@@ -1,18 +1,18 @@
 """
 Entry-point to the program, execute using
 
-> python main.py
+> python game.py
 
-TODO: Update if any arguments are needed
+Use --fullscreen to start the game in fullscreen mode
 """
 
 import pygame as pg
-from dataclasses import dataclass, field
+import sys
 from engine.events.event_handler import EventHandler
+from engine.display.launch_menus.launch_menus import LaunchMenu
+from engine.display.window import Window
 from engine.state_manager import StateManager
-from game_window.window import Window
-from game_window.launch_menus.launch_menus import LaunchMenu
-    
+
 
 class GameExecutor():
     """Highest-level instance of the game."""
@@ -24,12 +24,21 @@ class GameExecutor():
         pg.init()
         pg.display.init()
         pg.font.init()
+        
+        # Process command line arguments (The script name will always be the first arg)
+        fullscreen = False
+    
+        if len(sys.argv) > 1:
+            if "--fullscreen" in sys.argv:
+                fullscreen = True
 
+        # Window instance (must be first)
+        self.window = Window(fullscreen)
+        
         # Get singleton instances
-        self.event_handler = EventHandler.get_instance()
-        self.launch_menu = LaunchMenu.get_instance()
-        self.state_manager = StateManager.get_instance()
-        self.window = Window.get_instance()
+        self.event_handler = EventHandler()
+        self.launch_menu = LaunchMenu()
+        self.state_manager = StateManager()
 
         # Set the game to open the main launch menu
         self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["MAIN_MENU"])

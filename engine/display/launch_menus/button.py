@@ -6,24 +6,22 @@ import engine.file_paths as paths
 import pygame as pg
 import os
 from dataclasses import dataclass, field
-from game_window.window import Window
+from engine.display.window import Window
 from pygame.locals import *
 
 @dataclass
 class ButtonProperties():
-    window = Window.get_instance()
-    
     # Button text
     text: str
 
     # Size and positional
     center_x: int
     center_y: int
+    width: int
+    height: int
     top_left_x: int = field(init=False)
     top_left_y: int = field(init=False)
-    width: int = 6*window.properties.width_unit
-    height: int = window.properties.height_unit
-    font_size: int = int(0.75*window.properties.height_unit)
+    font_size: int = field(init=False)
 
     # Colors
     unpressed_button_color: tuple[int, int, int]  = (255, 255, 255)
@@ -35,6 +33,7 @@ class ButtonProperties():
     def __post_init__(self):
         self.top_left_x = self.center_x - self.width/2
         self.top_left_y = self.center_y - self.height/2
+        self.font_size = int(0.75*self.height)
 
 
 class Button():
@@ -44,7 +43,11 @@ class Button():
         self.window = Window.get_instance()
 
         # Main menu button constants
-        self.properties = ButtonProperties(text, center_coords[0], center_coords[1])
+        self.properties = ButtonProperties(text, 
+                                           center_coords[0], 
+                                           center_coords[1], 
+                                           6*self.window.properties.width_unit, 
+                                           self.window.properties.height_unit)
 
         # Create a new surface for the button's rectangle
         self.button_surface = pg.Surface((self.properties.width, self.properties.height))
@@ -64,7 +67,7 @@ class Button():
         font_file_path = os.path.join(paths.get_font_folder(), "Gamy-PERSONAL.otf")
         self.font = pg.font.Font(font_file_path, self.properties.font_size)
 
-    def check(self):
+    def poll(self):
         """Update the button's state and run code accordingly."""
         previous_pressed_state = self.pressed
         currently_pressed = self.is_pressed()
