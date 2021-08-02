@@ -12,18 +12,18 @@ from pygame.locals import *
 @dataclass
 class ButtonProperties():
     window = Window.get_instance()
+    
+    # Button text
     text: str
-    center_x: int
-    center_y: int
 
     # Size and positional
+    center_x: int
+    center_y: int
+    top_left_x: int = field(init=False)
+    top_left_y: int = field(init=False)
     width: int = 6*window.properties.width_unit
     height: int = window.properties.height_unit
     font_size: int = int(0.75*window.properties.height_unit)
-
-    # Top left coordinates
-    top_left_x: int = field(init=False)
-    top_left_y: int = field(init=False)
 
     # Colors
     unpressed_button_color: tuple[int, int, int]  = (255, 255, 255)
@@ -78,6 +78,7 @@ class Button():
 
     def draw(self):
         """Draw a button on screen with default size and colors, with given text and center coordinates."""
+        # TODO: Add border around buttons
         # Color the button based on the pressed state
         if self.pressed:
             fill_color = self.properties.pressed_button_color

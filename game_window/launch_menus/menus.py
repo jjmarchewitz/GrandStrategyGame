@@ -31,7 +31,7 @@ class Menu():
         """Add a button to the menu to be drawn."""
         self.buttons.update({name: button})
         
-    def check(self):
+    def poll(self):
         """Check all buttons for being pressed and run their functions if needed."""
         for _, value in self.buttons.items():
             value.check()
@@ -53,9 +53,17 @@ class MainMenu(Menu):
 
     def __init__(self):
         """Construct a MainMenu object"""
+        # Super-class init method
         super().__init__()
+        
+        # Menu-specific properties dataclass instance
         self.properties = MainMenuProperties()
         
+        # Add main menu buttons
+        self.main_menu_buttons()
+        
+    def main_menu_buttons(self):
+        """Add all buttons to the main menu."""
         self.add_button(
             "SP",
             Button(

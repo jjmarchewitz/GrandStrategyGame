@@ -27,6 +27,7 @@ class LaunchMenu():
         self.state_manager = StateManager.get_instance()
         self.window = Window.get_instance()
 
+        # Menus dict with launch menu related state manager IDs as the keys, and menu objects as values
         self.menus = {
             self.state_manager.launch_menu["MAIN_MENU"]: MainMenu(),
             self.state_manager.launch_menu["SP"]: DummyMenu(),
@@ -35,6 +36,7 @@ class LaunchMenu():
             self.state_manager.launch_menu["OPTIONS"]: DummyMenu(),
         }
 
+        # Currently displayed menu (one of the values from self.menus)
         self.current_menu = None
 
     def run(self, current_event = None):
@@ -44,10 +46,9 @@ class LaunchMenu():
         if current_event != None:
             if current_event.type == self.event_handler.custom_types["UPDATE_GAME_STATE"].pygame_id:
                 if current_event.__dict__["STATE"] in self.state_manager.launch_menu.values():
-                    self.window.clear()
                     self.current_menu = self.menus[current_event.__dict__["STATE"]]
                     self.current_menu.draw()
 
+        # Check for any updates from 
         if self.current_menu != None:
-            # Update the menu to be the correct one
-            self.current_menu.check()
+            self.current_menu.poll()

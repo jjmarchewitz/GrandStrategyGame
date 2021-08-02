@@ -20,7 +20,8 @@ class GameExecutor():
     def __init__(self):
         """Defining class constants and variables, calling main()."""
 
-        # Initialize pygame objects
+        # Initialize pygame modules
+        pg.init()
         pg.display.init()
         pg.font.init()
 
@@ -30,7 +31,7 @@ class GameExecutor():
         self.state_manager = StateManager.get_instance()
         self.window = Window.get_instance()
 
-        # Set the game to open the start menu
+        # Set the game to open the main launch menu
         self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["MAIN_MENU"])
 
         # Turn off repeated key input
