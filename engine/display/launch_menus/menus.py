@@ -161,6 +161,14 @@ class MainMenu(Menu):
         
 
 @dataclass
+class SinglePlayerMenuProperties():
+    background_color: tuple[int, int, int] = (100, 100, 100)
+
+class SinglePlayerMenu(Menu):
+    pass
+
+
+@dataclass
 class DummyMenuProperties():
     background_color: tuple[int, int, int] = (100, 100, 100)
     title_text: str = "Dummy Menu"
