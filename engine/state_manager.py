@@ -39,16 +39,17 @@ class StateManager():
             "HOST": 102,
             "JOIN": 103,
             "OPTIONS": 104,
+            "NEW_GAME": 105,
+            "LOAD_SAVE": 106,
         }
         
         # In game states
         self.in_game = {
-            "LOAD": 200,
-            "PLAY": 201,
-            "PAUSE": 202,
-            "PAUSE_MENU": 203,
-            "SAVING": 204,
-            "EXIT_TO_MAIN_MENU": 205,
+            "PLAY": 200,
+            "PAUSE": 201,
+            "PAUSE_MENU": 202,
+            "SAVING": 203,
+            "EXIT_TO_MAIN_MENU": 204,
         }
 
     def update_state(self, state):

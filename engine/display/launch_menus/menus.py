@@ -10,7 +10,9 @@ import textwrap
 from .button import Button, ButtonProperties
 from dataclasses import dataclass, field
 from engine.events.event_handler import EventHandler
+from engine.display.colors import Colors
 from engine.display.window import Window
+from typing import Any
 
 class Menu():
     """Base class for all menus"""
@@ -18,6 +20,7 @@ class Menu():
     def __init__(self):
         """Construct a Menu object."""
         self.buttons = {}
+        self.colors = Colors()
         self.event_handler = EventHandler.get_instance()
         self.state_manager = StateManager.get_instance()
         self.window = Window.get_instance()
@@ -40,9 +43,9 @@ class Menu():
 @dataclass
 class MainMenuProperties():
     """Properties of the Main Menu"""
-    background_color: tuple[int, int, int] = (25, 205, 255)
+    background_color: Any = Colors.blue
     title_text: str = "GEARS OF HALO THEFT AUTO 5"
-    title_color: tuple[int, int, int] = (50, 50, 50)
+    title_color: Any = Colors.black
     title_center_x: int = field(init=False)
     title_center_y: int = field(init=False)
     title_font_size: int = field(init=False)
@@ -76,8 +79,8 @@ class MainMenu(Menu):
                 "SINGLE PLAYER",
                 lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["SP"]),
                 (self.button_coords_from_order(1))
-                )
             )
+        )
         self.add_button(
             "HOST",
             Button(
@@ -141,9 +144,8 @@ class MainMenu(Menu):
 
         # Create and fill the title surface
         title_surface = pg.Surface((self.window.properties.width, number_of_lines * line_height))
-        black = (0, 0, 0)
-        title_surface.fill(black)
-        title_surface.set_colorkey(black)
+        title_surface.fill(Colors.background_for_transparent_color_keying_1)
+        title_surface.set_colorkey(Colors.background_for_transparent_color_keying_1)
 
         for line_number, line in enumerate(wrapped_title_text_lines):
             text_surface = title_font.render(line, True, self.properties.title_color)
@@ -162,17 +164,66 @@ class MainMenu(Menu):
 
 @dataclass
 class SinglePlayerMenuProperties():
-    background_color: tuple[int, int, int] = (100, 100, 100)
+    background_color: Any = Colors.cactus_green
+    title_text: str = "Single Player"
+    title_center_x: int = field(init=False)
+    title_center_y: int = field(init=False)
+    title_font_size: int = field(init=False)
+    
+    def __post_init__(self):
+        window = Window.get_instance()
+        self.title_center_x = window.properties.center_x
+        self.title_center_y = int(1.875*window.properties.height_unit)
+        self.title_font_size = int(1.15*window.properties.height_unit)
+    
 
 class SinglePlayerMenu(Menu):
-    pass
+    """Single player menu that has functionality for starting new games and loading old ones."""
+    
+    def __init__(self):
+        super().__init__()
+        
+        self.properties = SinglePlayerMenuProperties
+        
+        self.single_player_menu_buttons()
+        
+    def single_player_menu_buttons(self):
+        self.add_button(
+            "NEW GAME",
+            Button(
+                "NEW GAME",
+                lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["NEW_GAME"]),
+                ((self.window.properties.center_x, self.window.properties.center_y - 2 * self.window.properties.height_unit))
+            )
+        )
+        self.add_button(
+            "LOAD SAVE",
+            Button(
+                "LOAD SAVE",
+                lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["LOAD_SAVE"]),
+                ((self.window.properties.center_x, self.window.properties.center_y))
+            )
+        )
+        self.add_button(
+            "EXIT_TO_MAIN",
+            Button(
+                "BACK TO MAIN",
+                lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["MAIN_MENU"]),
+                (self.window.properties.center_x, self.window.properties.center_y + 2 * self.window.properties.height_unit)
+            )
+        )
+        
+    def draw(self):
+        # Fill background
+        self.window.display_surface.fill(self.properties.background_color)
+        super().draw()
 
 
 @dataclass
 class DummyMenuProperties():
-    background_color: tuple[int, int, int] = (100, 100, 100)
+    background_color: Any = Colors.red
     title_text: str = "Dummy Menu"
-    title_color: tuple[int, int, int] = (50, 50, 50)
+    title_color: Any = Colors.black
     title_center_x: int = field(init=False)
     title_center_y: int = field(init=False)
     title_font_size: int = field(init=False)

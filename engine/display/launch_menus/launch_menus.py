@@ -4,7 +4,7 @@ Start menu: handles main menu and sub-menus
 
 from engine.state_manager import StateManager
 import pygame as pg
-from .menus import DummyMenu, MainMenu
+from .menus import DummyMenu, MainMenu, SinglePlayerMenu
 from engine.events.event_handler import EventHandler
 from engine.display.window import Window
 
@@ -30,7 +30,7 @@ class LaunchMenu():
         # Menus dict with launch menu related state manager IDs as the keys, and menu objects as values
         self.menus = {
             self.state_manager.launch_menu["MAIN_MENU"]: MainMenu(),
-            self.state_manager.launch_menu["SP"]: DummyMenu(),
+            self.state_manager.launch_menu["SP"]: SinglePlayerMenu(),
             self.state_manager.launch_menu["HOST"]: DummyMenu(),
             self.state_manager.launch_menu["JOIN"]: DummyMenu(),
             self.state_manager.launch_menu["OPTIONS"]: DummyMenu(),

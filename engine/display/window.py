@@ -4,6 +4,7 @@ Window: handles display object and its properties such as resolution and fullscr
 
 import pygame as pg
 from dataclasses import dataclass, field
+from engine.display.colors import Colors
 
 
 @dataclass
@@ -70,4 +71,4 @@ class Window():
 
     def clear(self):
         """Fill screen with black."""
-        self.display_surface.fill((0, 0, 0))
+        self.display_surface.fill(Colors.black)

@@ -6,8 +6,9 @@ import engine.file_paths as paths
 import pygame as pg
 import os
 from dataclasses import dataclass, field
+from engine.display.colors import Colors
 from engine.display.window import Window
-from pygame.locals import *
+from typing import Any
 
 @dataclass
 class ButtonProperties():
@@ -24,10 +25,10 @@ class ButtonProperties():
     font_size: int = field(init=False)
 
     # Colors
-    unpressed_button_color: tuple[int, int, int]  = (255, 255, 255)
-    pressed_button_color: tuple[int, int, int]  = (100, 100, 100)
-    unpressed_text_color: tuple[int, int, int]  = (100, 100, 100)
-    pressed_text_color: tuple[int, int, int]  = (255, 255, 255)
+    unpressed_button_color: Any = Colors.white
+    pressed_button_color: Any = Colors.grey
+    unpressed_text_color: Any = Colors.grey
+    pressed_text_color: Any = Colors.white
 
     # Update coordinate values once class has been initialized
     def __post_init__(self):
@@ -43,11 +44,13 @@ class Button():
         self.window = Window.get_instance()
 
         # Main menu button constants
-        self.properties = ButtonProperties(text, 
-                                           center_coords[0], 
-                                           center_coords[1], 
-                                           6*self.window.properties.width_unit, 
-                                           self.window.properties.height_unit)
+        self.properties = ButtonProperties(
+            text, 
+            center_coords[0], 
+            center_coords[1], 
+            6*self.window.properties.width_unit, 
+            self.window.properties.height_unit
+        )
 
         # Create a new surface for the button's rectangle
         self.button_surface = pg.Surface((self.properties.width, self.properties.height))
