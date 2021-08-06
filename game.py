@@ -57,11 +57,16 @@ class GameExecutor():
 
         # Loop until quit condition is met
         while True:
-            current_event = None
             
-            while self.state_manager.super_state == self.state_manager.super_states["LAUNCH_MENU"]:
+            # Get the current event processing function list based on the current super state
+            event_processing_function_list = self.get_current_event_processing_function_list()
+            
+            while True:
                 # Get the newest event from the queue
                 current_event = pg.event.poll()
+                
+                # Get the current super state
+                current_super_state = self.state_manager.super_state
 
                 # If the event is a quit event, immediately break
                 if current_event.type == pg.QUIT:
@@ -69,9 +74,14 @@ class GameExecutor():
                 
                 # Pass the event to the game executor to update the state
                 self.process_event(current_event)
+                
+                # If the super state has changed after the self.process_event() call, break and update the processing functions list
+                if current_super_state != self.state_manager.super_state:
+                    event_processing_function_list = self.get_current_event_processing_function_list()
 
-                # Pass the event to the launch menu
-                self.launch_menu.run(current_event)
+                # Pass the event to the current event processing function list
+                for event_processing_function in event_processing_function_list:
+                    event_processing_function(current_event)
 
                 # Update the display and queue
                 pg.display.flip()
@@ -88,6 +98,20 @@ class GameExecutor():
         """Check the event for a state update and update the state accordingly."""
         if event.type == self.event_handler.custom_types["UPDATE_GAME_STATE"].pygame_id:
             self.state_manager.update_state(event.__dict__["STATE"])
+            
+    
+    def get_current_event_processing_function_list(self):
+        """Return the list of functions that the current event should be passed into based on the current super-state."""
+        if self.state_manager.super_state == self.state_manager.super_states["LAUNCH_MENU"]:
+            event_processing_functions_list = [
+                self.launch_menu.run
+            ]
+        elif self.state_manager.super_state == self.state_manager.super_states["IN_GAME"]:
+            event_processing_functions_list = [
+                
+            ]
+            
+        return event_processing_functions_list
             
 
     def exit_program(self):

@@ -22,14 +22,14 @@ class StateManager():
             StateManager.__instance = self
 
         # The purpose of these dictionaries is to catch any typos during development.
-        # If I attempted to set the state by typing the strings, a typo would possibly not be caught immediately, and cause a headache down the line.
+        # If I attempted to set the state by typing the values, a typo would possibly not be caught immediately, and cause a headache down the line.
         # By using this system, a typo in the code will return a "dictionary key not found" type of error and the game will not be able to run.
 
         # Game super states
         self.super_states = {
             "QUIT": 0,
             "LAUNCH_MENU": 1,
-            "GAME_RUNNING": 2,
+            "IN_GAME": 2,
         }
         
         # Launch menu states
@@ -43,7 +43,7 @@ class StateManager():
             "LOAD_SAVE": 106,
         }
         
-        # In game states
+        # In-game states
         self.in_game = {
             "PLAY": 200,
             "PAUSE": 201,
@@ -53,6 +53,7 @@ class StateManager():
         }
 
     def update_state(self, state):
+        """Update the game state and the super-state to match."""
         self.state = state
 
         if self.state in self.super_states.values():
