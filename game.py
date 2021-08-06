@@ -42,6 +42,9 @@ class GameExecutor():
 
         # Set the game to open the main launch menu
         self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["MAIN_MENU"])
+        
+        # Set the initial game state
+        self.state_manager.update_state(self.state_manager.launch_menu["MAIN_MENU"])
 
         # Turn off repeated key input
         pg.key.set_repeat()
@@ -54,23 +57,28 @@ class GameExecutor():
 
         # Loop until quit condition is met
         while True:
-            # Get the newest event from the queue
-            current_event = pg.event.poll()
+            current_event = None
+            
+            while self.state_manager.super_state == self.state_manager.super_states["LAUNCH_MENU"]:
+                # Get the newest event from the queue
+                current_event = pg.event.poll()
 
+                # If the event is a quit event, immediately break
+                if current_event.type == pg.QUIT:
+                    break
+                
+                # Pass the event to the game executor to update the state
+                self.process_event(current_event)
+
+                # Pass the event to the launch menu
+                self.launch_menu.run(current_event)
+
+                # Update the display and queue
+                pg.display.flip()
+                
             # If the event is a quit event, immediately break
             if current_event.type == pg.QUIT:
                 break
-
-            # TODO: Make this a loop of its own so that when the super state is "in-game" this isn't still being checked.
-            if self.state_manager.super_state == self.state_manager.super_states["LAUNCH_MENU"]:
-                # Pass the event to the launch menu
-                self.launch_menu.run(current_event)
-            
-            # Pass the event to the game executor to update the state
-            self.process_event(current_event)
-
-            # Update the display and queue
-            pg.display.flip()
 
         # Quit pygame
         self.exit_program()
@@ -78,7 +86,7 @@ class GameExecutor():
         
     def process_event(self, event):
         """Check the event for a state update and update the state accordingly."""
-        if event.type == self.event_handler.custom_types["UPDATE_GAME_STATE"]:
+        if event.type == self.event_handler.custom_types["UPDATE_GAME_STATE"].pygame_id:
             self.state_manager.update_state(event.__dict__["STATE"])
             
 

@@ -55,11 +55,12 @@ class StateManager():
     def update_state(self, state):
         self.state = state
 
-        if self.state in self.super_states:
+        if self.state in self.super_states.values():
             self.super_state = self.state
-        elif self.state in self.launch_menu_states:
+        elif self.state in self.launch_menu.values():
             self.super_state = self.super_states["LAUNCH_MENU"]
-        elif self.state in self.in_game_states:
+        elif self.state in self.in_game.values():
             self.super_state = self.super_states["GAME_RUNNING"]
         else:
+            breakpoint()
             raise Exception("Invalid state name.")
