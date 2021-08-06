@@ -164,6 +164,7 @@ class MainMenu(Menu):
 
 @dataclass
 class SinglePlayerMenuProperties():
+    """Properties for the high-level singleplayer menu."""
     background_color: Any = Colors.cactus_green
     title_text: str = "Single Player"
     title_center_x: int = field(init=False)
@@ -221,6 +222,7 @@ class SinglePlayerMenu(Menu):
 
 @dataclass
 class DummyMenuProperties():
+    """Properties for the dummy test menu."""
     background_color: Any = Colors.red
     title_text: str = "Dummy Menu"
     title_color: Any = Colors.black

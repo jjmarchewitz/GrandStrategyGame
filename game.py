@@ -61,8 +61,10 @@ class GameExecutor():
             if current_event.type == pg.QUIT:
                 break
 
-            # Pass the event to the launch menu
-            self.launch_menu.run(current_event)
+            # TODO: Make this a loop of its own so that when the super state is "in-game" this isn't still being checked.
+            if self.state_manager.super_state == self.state_manager.super_states["LAUNCH_MENU"]:
+                # Pass the event to the launch menu
+                self.launch_menu.run(current_event)
             
             # Pass the event to the game executor to update the state
             self.process_event(current_event)

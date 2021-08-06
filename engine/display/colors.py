@@ -4,10 +4,16 @@ import pygame as pg
 
 @dataclass
 class Colors():
+    """Dataclass to store common colors for the game."""
+    
+    # These colors should not be used for any actual coloring, and instead are reserved for
+    # use as background colors on surfaces that need a transparent background. These serve
+    # the function of green in green screens
     background_for_transparent_color_keying_1: Any = pg.Color("0x000000")
     background_for_transparent_color_keying_2: Any = pg.Color("0xFFFFFF")
     background_for_transparent_color_keying_3: Any = pg.Color("0xAAAAAA")
     
+    # Colors intended for general use throughout the game
     black: Any = pg.Color("0x161616")
     grey: Any = pg.Color("0x525252")
     white: Any = pg.Color("0xe7e7e7")

@@ -12,6 +12,7 @@ from typing import Any
 
 @dataclass
 class ButtonProperties():
+    """General button properties."""
     # Button text
     text: str
 
@@ -38,6 +39,7 @@ class ButtonProperties():
 
 
 class Button():
+    """Main menu button class."""
 
     def __init__(self, text, function, center_coords):
         # Singleton instances

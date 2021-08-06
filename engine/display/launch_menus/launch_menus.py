@@ -4,8 +4,8 @@ Start menu: handles main menu and sub-menus
 
 from engine.state_manager import StateManager
 import pygame as pg
-from .menus import DummyMenu, MainMenu, SinglePlayerMenu
 from engine.events.event_handler import EventHandler
+from engine.display.launch_menus.menus import DummyMenu, MainMenu, SinglePlayerMenu
 from engine.display.window import Window
 
 
