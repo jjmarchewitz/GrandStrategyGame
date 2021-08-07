@@ -25,6 +25,7 @@ class StateManager():
         # If I attempted to set the state by typing the values, a typo would possibly not be caught immediately, and cause a headache down the line.
         # By using this system, a typo in the code will return a "dictionary key not found" type of error and the game will not be able to run.
 
+
         # Game super states
         self.super_states = {
             "QUIT": 0,
@@ -49,14 +50,17 @@ class StateManager():
             "PAUSE": 202,
             "PAUSE_MENU": 203,
             "SAVING": 204,
-            "EXIT_TO_MAIN_MENU": 205,
-            "START_FROM_SAVE": 206,
+            "START_FROM_SAVE": 205,
         }
+        
+        self.hosting = False
+        self.singleplayer = False
 
     def update_state(self, state):
         """Update the game state and the super-state to match."""
         self.state = state
 
+        # Update super state
         if self.state in self.super_states.values():
             self.super_state = self.state
         elif self.state in self.launch_menu.values():
@@ -65,3 +69,12 @@ class StateManager():
             self.super_state = self.super_states["IN_GAME"]
         else:
             raise Exception("Invalid state name.")
+        
+        # Update individual state-related flags
+        if self.state == self.launch_menu["MAIN_MENU"]:
+            self.hosting = False
+            self.singleplayer = False
+        elif self.state == self.launch_menu["SP"]:
+            self.singleplayer = True
+        elif self.state == self.launch_menu["HOST"]:
+            self.hosting = True

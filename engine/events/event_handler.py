@@ -5,6 +5,7 @@
 import pygame as pg
 import collections
 from dataclasses import dataclass, field
+from engine.server.server import Server
 
 @dataclass
 class CustomType():
@@ -23,6 +24,8 @@ class EventHandler():
     def __init__(self):
         if EventHandler.__instance == None:
             EventHandler.__instance = self
+            
+        self.server = Server.get_instance(0)
 
         # Define custom event types
         type_update_game_state = CustomType()
