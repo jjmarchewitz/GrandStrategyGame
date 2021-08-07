@@ -31,6 +31,7 @@ class LaunchMenu():
         self.menus = {
             self.state_manager.launch_menu["MAIN_MENU"]: MainMenu(),
             self.state_manager.launch_menu["SP"]: SinglePlayerMenu(),
+            self.state_manager.launch_menu["LOAD_SAVE"]: DummyMenu(),
             self.state_manager.launch_menu["HOST"]: DummyMenu(),
             self.state_manager.launch_menu["JOIN"]: DummyMenu(),
             self.state_manager.launch_menu["OPTIONS"]: DummyMenu(),

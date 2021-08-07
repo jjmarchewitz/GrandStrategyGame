@@ -193,7 +193,7 @@ class SinglePlayerMenu(Menu):
             "NEW GAME",
             Button(
                 "NEW GAME",
-                lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["NEW_GAME"]),
+                lambda: self.event_handler.create_and_push_state_event(self.state_manager.in_game["NEW_GAME"]),
                 ((self.window.properties.center_x, self.window.properties.center_y - 2 * self.window.properties.height_unit))
             )
         )
@@ -201,6 +201,7 @@ class SinglePlayerMenu(Menu):
             "LOAD SAVE",
             Button(
                 "LOAD SAVE",
+                # TODO: Implement save loading, change this event
                 lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["LOAD_SAVE"]),
                 ((self.window.properties.center_x, self.window.properties.center_y))
             )

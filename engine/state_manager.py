@@ -39,17 +39,18 @@ class StateManager():
             "HOST": 102,
             "JOIN": 103,
             "OPTIONS": 104,
-            "NEW_GAME": 105,
-            "LOAD_SAVE": 106,
+            "LOAD_SAVE": 105,
         }
         
         # In-game states
         self.in_game = {
-            "PLAY": 200,
-            "PAUSE": 201,
-            "PAUSE_MENU": 202,
-            "SAVING": 203,
-            "EXIT_TO_MAIN_MENU": 204,
+            "NEW_GAME": 200,
+            "PLAY": 201,
+            "PAUSE": 202,
+            "PAUSE_MENU": 203,
+            "SAVING": 204,
+            "EXIT_TO_MAIN_MENU": 205,
+            "START_FROM_SAVE": 206,
         }
 
     def update_state(self, state):
@@ -61,7 +62,7 @@ class StateManager():
         elif self.state in self.launch_menu.values():
             self.super_state = self.super_states["LAUNCH_MENU"]
         elif self.state in self.in_game.values():
-            self.super_state = self.super_states["GAME_RUNNING"]
+            self.super_state = self.super_states["IN_GAME"]
         else:
             breakpoint()
             raise Exception("Invalid state name.")
