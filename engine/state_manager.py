@@ -64,5 +64,4 @@ class StateManager():
         elif self.state in self.in_game.values():
             self.super_state = self.super_states["IN_GAME"]
         else:
-            breakpoint()
             raise Exception("Invalid state name.")
