@@ -25,7 +25,7 @@ class EventHandler():
         if EventHandler.__instance == None:
             EventHandler.__instance = self
             
-        self.server = Server.get_instance(0)
+        self.server = Server.get_instance()
 
         # Define custom event types
         type_update_game_state = CustomType()
