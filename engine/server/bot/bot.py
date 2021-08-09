@@ -3,7 +3,7 @@
 # with AI
 ##########################################################################
 
-from engine.core.server.participant import Participant
+from engine.server.participant import Participant
 
 class Bot(Participant):
     

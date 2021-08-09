@@ -1,0 +1,11 @@
+##########################################################################
+# Player: A Participant sub-class where one instance controls the
+# interface a player has to interact with their country
+##########################################################################
+
+from engine.server.participant import Participant
+
+class Player(Participant):
+    
+    def __init__(self):
+        pass
