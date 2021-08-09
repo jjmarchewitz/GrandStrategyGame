@@ -3,7 +3,7 @@
 # interface a player has to interact with their country
 ##########################################################################
 
-from engine.server.participant import Participant
+from engine.server.participants.participant import Participant
 
 class Player(Participant):
     

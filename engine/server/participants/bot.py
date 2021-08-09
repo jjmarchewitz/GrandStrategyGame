@@ -3,9 +3,9 @@
 # with AI
 ##########################################################################
 
-from engine.server.participant import Participant
+from engine.server.participants.participant import Participant
 
 class Bot(Participant):
     
-    def __init__(self):
-        pass
+    def __init__(self, country_obj):
+        self.country = country_obj

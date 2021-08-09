@@ -4,6 +4,7 @@
 ##########################################################################
 
 from engine.core.countries.country_manager import CountryManager
+from engine.server.participants.bot import Bot
 
 class Server():
     """Represents the game server."""
@@ -24,9 +25,9 @@ class Server():
             
         self.participants = {}
         
-        for country_tag in self.country_manager.countries.keys():
-            # TODO: Update the value of this with an actual bot object
-            self.participants.update({country_tag: "BOT_OBJECT_WITH_COUNTRY_PASSED_IN"})
+        # Initialize all countries with bots
+        for country_tag, country_obj in self.country_manager.countries.items():
+            self.participants.update({country_tag: Bot(country_obj)})
         
         
             
