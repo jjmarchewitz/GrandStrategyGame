@@ -11,6 +11,7 @@ import sys
 from engine.events.event_handler import EventHandler
 from engine.display.launch_menus.launch_menus import LaunchMenu
 from engine.display.window import Window
+from engine.server.server import Server
 from engine.state_manager import StateManager
 
 
@@ -36,9 +37,10 @@ class GameExecutor():
         self.window = Window(fullscreen)
         
         # Get singleton instances
-        self.event_handler = EventHandler()
-        self.launch_menu = LaunchMenu()
-        self.state_manager = StateManager()
+        self.event_handler = EventHandler.get_instance()
+        self.launch_menu = LaunchMenu.get_instance()
+        self.server = Server.get_instance()
+        self.state_manager = StateManager.get_instance()
 
         # Set the game to open the main launch menu
         self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["MAIN_MENU"])
@@ -99,6 +101,9 @@ class GameExecutor():
         if event.type == self.event_handler.custom_types["UPDATE_GAME_STATE"].pygame_id:
             self.state_manager.update_state(event.__dict__["STATE"])
             
+            # if event.__dict__["STATE"] == self.state_manager.in_game["NEW_GAME"]:
+                
+            
     
     def get_current_event_processing_function_list(self):
         """Return the list of functions that the current event should be passed into based on the current super-state."""
@@ -108,7 +113,7 @@ class GameExecutor():
             ]
         elif self.state_manager.super_state == self.state_manager.super_states["IN_GAME"]:
             event_processing_functions_list = [
-                
+                self.server.run
             ]
             
         return event_processing_functions_list
