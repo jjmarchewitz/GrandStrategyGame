@@ -1,8 +1,8 @@
 ##########################################################################
-# Participant: A base class for game participants (i.e. Players and Bots)
+# Country: A representation of one in-game country
 ##########################################################################
 
-class Participant():
+class Country():
     
-    def __init__(self):
-        pass
+    def __init__(self, tag):
+        self.tag = tag
