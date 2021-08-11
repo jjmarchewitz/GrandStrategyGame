@@ -79,40 +79,40 @@ class MainMenu(Menu):
                 "SINGLE PLAYER",
                 lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["SP"]),
                 (self.button_coords_from_order(1))
+                )
             )
-        )
         self.add_button(
             "HOST",
             Button(
                 "HOST",
                 lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["HOST"]),
                 (self.button_coords_from_order(2))
+                )
             )
-        )
         self.add_button(
             "JOIN",
             Button(
                 "JOIN",
                 lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["JOIN"]),
                 (self.button_coords_from_order(3))
+                )
             )
-        )
         self.add_button(
             "OPTIONS",
             Button(
                 "OPTIONS",
                 lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["OPTIONS"]),
                 (self.button_coords_from_order(4))
+                )
             )
-        )
         self.add_button(
             "QUIT",
             Button(
                 "QUIT",
                 lambda: pg.event.post(pg.event.Event(pg.QUIT)),
                 (self.button_coords_from_order(5))
+                )
             )
-        )
         
     def button_coords_from_order(self, order_num):
         """Get coordinates for the main menu buttons from their order."""
@@ -195,8 +195,8 @@ class SinglePlayerMenu(Menu):
                 "NEW GAME",
                 lambda: self.event_handler.create_and_push_state_event(self.state_manager.in_game["NEW_GAME"]),
                 ((self.window.properties.center_x, self.window.properties.center_y - 2 * self.window.properties.height_unit))
+                )
             )
-        )
         self.add_button(
             "LOAD SAVE",
             Button(
@@ -204,16 +204,16 @@ class SinglePlayerMenu(Menu):
                 # TODO: Implement save loading, change this event
                 lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["LOAD_SAVE"]),
                 ((self.window.properties.center_x, self.window.properties.center_y))
+                )
             )
-        )
         self.add_button(
             "EXIT_TO_MAIN",
             Button(
                 "BACK TO MAIN",
                 lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["MAIN_MENU"]),
                 (self.window.properties.center_x, self.window.properties.center_y + 2 * self.window.properties.height_unit)
+                )
             )
-        )
         
     def draw(self):
         # Fill background
@@ -250,8 +250,8 @@ class DummyMenu(Menu):
                 "BACK TO MAIN",
                 lambda: self.event_handler.create_and_push_state_event(self.state_manager.launch_menu["MAIN_MENU"]),
                 (self.window.properties.center_x, self.window.properties.center_y)
+                )
             )
-        )
         
     def draw(self):
         """Draw the dummy menu."""

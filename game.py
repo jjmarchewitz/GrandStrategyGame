@@ -100,11 +100,8 @@ class GameExecutor():
         """Check the event for a state update and update the state accordingly."""
         if event.type == self.event_handler.custom_types["UPDATE_GAME_STATE"].pygame_id:
             self.state_manager.update_state(event.__dict__["STATE"])
-            
-            # if event.__dict__["STATE"] == self.state_manager.in_game["NEW_GAME"]:
                 
             
-    
     def get_current_event_processing_function_list(self):
         """Return the list of functions that the current event should be passed into based on the current super-state."""
         if self.state_manager.super_state == self.state_manager.super_states["LAUNCH_MENU"]:

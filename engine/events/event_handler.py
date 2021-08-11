@@ -10,7 +10,7 @@ from engine.server.server import Server
 @dataclass
 class CustomType():
     pygame_id: int = pg.event.custom_type()
-    event_dict: dict = field(init=False)
+    event_dict: dict = field(default_factory=dict)
 
 class EventHandler():
     # Singleton instance
@@ -28,14 +28,11 @@ class EventHandler():
         self.server = Server.get_instance()
 
         # Define custom event types
-        type_update_game_state = CustomType()
-        type_update_game_state.event_dict = {
-            "STATE": None,
-        }
-
         self.custom_types = {
-            "UPDATE_GAME_STATE": type_update_game_state,
-        }
+            "UPDATE_GAME_STATE": CustomType(event_dict={
+                "STATE": None,
+                }),
+            }
 
     def get_event_dict(self, event_type):
         event_dict_copy = self.custom_types[event_type].event_dict.copy()
