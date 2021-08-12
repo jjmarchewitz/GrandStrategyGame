@@ -1,5 +1,5 @@
 """
-Start menu: handles main menu and sub-menus
+Launch menu: handles main menu and sub-menus
 """
 
 from engine.state_manager import StateManager

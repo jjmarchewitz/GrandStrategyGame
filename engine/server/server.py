@@ -5,6 +5,7 @@
 
 from dataclasses import dataclass
 from engine.core.countries.country_manager import CountryManager
+from engine.state_manager import StateManager
 from engine.server.participants.bot import Bot
 
 @dataclass
@@ -30,7 +31,9 @@ class Server():
         if Server.__instance == None:
             Server.__instance = self
             
+        # Get singleton instances
         self.country_manager = CountryManager.get_instance()
+        self.state_manager = StateManager.get_instance()
             
         self.participants = {}
         
