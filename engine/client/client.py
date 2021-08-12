@@ -18,6 +18,6 @@ class Client():
         if Client.__instance == None:
             Client.__instance = self
     
-    def run(self):
+    def run(self, event):
         """Runs all client-side functionality, including the display and interaction with the Player object."""
         pass
