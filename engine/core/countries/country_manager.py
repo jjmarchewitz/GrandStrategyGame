@@ -22,4 +22,5 @@ class CountryManager():
             self.countries = {
                 "A": Country("A"),
                 "B": Country("B"),
+                "C": Country("C"),
             }

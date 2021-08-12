@@ -4,5 +4,5 @@
 
 class Participant():
     
-    def __init__(self):
-        pass
+    def __init__(self, country_obj):
+        self.country = country_obj

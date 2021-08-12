@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from engine.core.countries.country_manager import CountryManager
 from engine.state_manager import StateManager
 from engine.server.participants.bot import Bot
+from engine.server.participants.player import Player
 
 @dataclass
 class GameSpeeds():
@@ -44,6 +45,20 @@ class Server():
         # Initialize all countries with bots
         for country_tag, country_obj in self.country_manager.countries.items():
             self.participants.update({country_tag: Bot(country_obj)})
+            
         
     def run(self, event):
         pass
+   
+    
+    def add_player(self, tag):
+        """Replace a Bot object with a Player at the given country tag."""
+        retval = None
+        if tag != None:
+            self.participants.update({tag: Player(self.country_manager.countries[tag])})
+            retval = self.participants[tag]
+        return retval
+      
+        
+    def remove_player(self, tag):
+        self.participants.update({tag: Bot(self.country_manager.countries[tag])})

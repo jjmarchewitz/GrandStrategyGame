@@ -7,5 +7,5 @@ from engine.server.participants.participant import Participant
 
 class Player(Participant):
     
-    def __init__(self):
-        pass
+    def __init__(self, country_obj):
+        super().__init__(country_obj)
