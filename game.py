@@ -6,6 +6,7 @@ Entry-point to the program, execute using
 Use --fullscreen to start the game in fullscreen mode
 """
 
+from engine.client.client import Client
 import pygame as pg
 import sys
 from engine.events.event_handler import EventHandler
@@ -37,6 +38,7 @@ class GameExecutor():
         self.window = Window(fullscreen)
         
         # Get singleton instances
+        self.client = Client.get_instance()
         self.event_handler = EventHandler.get_instance()
         self.launch_menu = LaunchMenu.get_instance()
         self.server = Server.get_instance()
@@ -106,11 +108,12 @@ class GameExecutor():
         """Return the list of functions that the current event should be passed into based on the current super-state."""
         if self.state_manager.super_state == self.state_manager.super_states["LAUNCH_MENU"]:
             event_processing_functions_list = [
-                self.launch_menu.run
+                self.launch_menu.run,
             ]
         elif self.state_manager.super_state == self.state_manager.super_states["IN_GAME"]:
             event_processing_functions_list = [
-                self.server.run
+                self.server.run,
+                self.client.run,
             ]
             
         return event_processing_functions_list

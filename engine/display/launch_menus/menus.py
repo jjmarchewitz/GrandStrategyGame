@@ -147,6 +147,7 @@ class MainMenu(Menu):
         title_surface.fill(Colors.background_for_transparent_color_keying_1)
         title_surface.set_colorkey(Colors.background_for_transparent_color_keying_1)
 
+        # Render the title text and add it to the title surface
         for line_number, line in enumerate(wrapped_title_text_lines):
             text_surface = title_font.render(line, True, self.properties.title_color)
 
@@ -189,6 +190,7 @@ class SinglePlayerMenu(Menu):
         self.single_player_menu_buttons()
         
     def single_player_menu_buttons(self):
+        """Add all singleplayer menu buttons to the menu."""
         self.add_button(
             "NEW GAME",
             Button(
@@ -216,6 +218,7 @@ class SinglePlayerMenu(Menu):
             )
         
     def draw(self):
+        """Draw the singleplayer menu"""
         # Fill background
         self.window.display_surface.fill(self.properties.background_color)
         super().draw()
