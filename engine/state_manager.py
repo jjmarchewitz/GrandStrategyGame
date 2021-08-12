@@ -25,32 +25,31 @@ class StateManager():
         # If I attempted to set the state by typing the values, a typo would possibly not be caught immediately, and cause a headache down the line.
         # By using this system, a typo in the code will return a "dictionary key not found" type of error and the game will not be able to run.
 
-
         # Game super states
         self.super_states = {
-            "QUIT": 0,
-            "LAUNCH_MENU": 1,
-            "IN_GAME": 2,
+            "QUIT": "QUIT",
+            "LAUNCH_MENU": "LAUNCH_MENU",
+            "IN_GAME": "IN_GAME",
         }
         
         # Launch menu states
         self.launch_menu = {
-            "MAIN_MENU": 100,
-            "SP": 101,
-            "HOST": 102,
-            "JOIN": 103,
-            "OPTIONS": 104,
-            "LOAD_SAVE": 105,
+            "MAIN_MENU": "MAIN_MENU",
+            "SP": "SP",
+            "HOST": "HOST",
+            "JOIN": "JOIN",
+            "OPTIONS": "OPTIONS",
+            "LOAD_SAVE": "LOAD_SAVE",
         }
         
         # In-game states
         self.in_game = {
-            "NEW_GAME": 200,
-            "PLAY": 201,
-            "PAUSE": 202,
-            "PAUSE_MENU": 203,
-            "SAVING": 204,
-            "START_FROM_SAVE": 205,
+            "NEW_GAME": "NEW_GAME",
+            "PLAY": "PLAY",
+            "PAUSE": "PAUSE",
+            "PAUSE_MENU": "PAUSE_MENU",
+            "SAVING": "SAVING",
+            "START_FROM_SAVE": "START_FROM_SAVE",
         }
         
         self.hosting = False
