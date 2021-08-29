@@ -7,14 +7,17 @@ import collections
 from dataclasses import dataclass, field
 from engine.server.server import Server
 
+
 @dataclass
-class CustomType():
+class CustomType:
     pygame_id: int = pg.event.custom_type()
     event_dict: dict = field(default_factory=dict)
 
-class EventHandler():
+
+class EventHandler:
     # Singleton instance
     __instance = None
+
     @staticmethod
     def get_instance():
         if EventHandler.__instance == None:
@@ -24,15 +27,17 @@ class EventHandler():
     def __init__(self):
         if EventHandler.__instance == None:
             EventHandler.__instance = self
-            
+
         self.server = Server.get_instance()
 
         # Define custom event types
         self.custom_types = {
-            "UPDATE_GAME_STATE": CustomType(event_dict={
-                "STATE": None,
-                }),
-            }
+            "UPDATE_GAME_STATE": CustomType(
+                event_dict={
+                    "STATE": None,
+                }
+            ),
+        }
 
     def get_event_dict(self, event_type):
         event_dict_copy = self.custom_types[event_type].event_dict.copy()
@@ -55,9 +60,11 @@ class EventHandler():
         for key in event_dict:
             complete_event_dict[key] = event_dict[key]
 
-        event = pg.event.Event(self.custom_types[event_type].pygame_id, complete_event_dict)
+        event = pg.event.Event(
+            self.custom_types[event_type].pygame_id, complete_event_dict
+        )
 
         return event
-    
+
     def create_and_push_state_event(self, new_state):
         pg.event.post(self.create_event("UPDATE_GAME_STATE", {"STATE": new_state}))

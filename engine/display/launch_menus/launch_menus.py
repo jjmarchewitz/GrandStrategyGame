@@ -9,9 +9,10 @@ from engine.display.launch_menus.menus import DummyMenu, MainMenu, SinglePlayerM
 from engine.display.window import Window
 
 
-class LaunchMenu():
+class LaunchMenu:
     # Singleton instance
     __instance = None
+
     def get_instance():
         if LaunchMenu.__instance == None:
             LaunchMenu()
@@ -40,16 +41,22 @@ class LaunchMenu():
         # Currently displayed menu (one of the values from self.menus)
         self.current_menu = None
 
-    def run(self, current_event = None):
+    def run(self, current_event=None):
         """Execute the main menu logic, including calling any sub-menus."""
 
         # Check if the current event is a start menu change
         if current_event != None:
-            if current_event.type == self.event_handler.custom_types["UPDATE_GAME_STATE"].pygame_id:
-                if current_event.__dict__["STATE"] in self.state_manager.launch_menu.values():
+            if (
+                current_event.type
+                == self.event_handler.custom_types["UPDATE_GAME_STATE"].pygame_id
+            ):
+                if (
+                    current_event.__dict__["STATE"]
+                    in self.state_manager.launch_menu.values()
+                ):
                     self.current_menu = self.menus[current_event.__dict__["STATE"]]
                     self.current_menu.draw()
 
-        # Check for any updates from 
+        # Check for any updates from
         if self.current_menu != None:
             self.current_menu.poll()

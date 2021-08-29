@@ -8,8 +8,9 @@ from engine.display.colors import Colors
 
 
 @dataclass
-class WindowProperties():
+class WindowProperties:
     """Properties list of a window object."""
+
     name: str
     fullscreen: bool
     width: int = field(init=False)
@@ -29,18 +30,19 @@ class WindowProperties():
             # TODO: Update with user-changeable settings
             self.width = 600
             self.height = 600
-            
-        self.width_unit = self.width/12
-        self.height_unit = self.height/12
-        self.center_x = self.width/2
-        self.center_y = self.height/2
+
+        self.width_unit = self.width / 12
+        self.height_unit = self.height / 12
+        self.center_x = self.width / 2
+        self.center_y = self.height / 2
 
 
-class Window():
+class Window:
     """Wrapper around all display functions."""
 
     # Singleton instance
     __instance = None
+
     @staticmethod
     def get_instance():
         if Window.__instance == None:
@@ -50,7 +52,7 @@ class Window():
     def __init__(self, is_fullscreen=False):
         if Window.__instance == None:
             Window.__instance = self
-            
+
         # Init the display if it has not already been initialized
         if not pg.display.get_init():
             pg.display.init()
@@ -61,11 +63,14 @@ class Window():
         # Open a new window at the desired dimensions and set its properties
         if self.properties.fullscreen:
             # Initialize display surface as full screen at full resolution
-            self.display_surface = pg.display.set_mode((self.properties.width, self.properties.height), pg.FULLSCREEN)
+            self.display_surface = pg.display.set_mode(
+                (self.properties.width, self.properties.height), pg.FULLSCREEN
+            )
         else:
             # Initialize display surface as a window
-            self.display_surface = pg.display.set_mode((self.properties.width, self.properties.height))
-
+            self.display_surface = pg.display.set_mode(
+                (self.properties.width, self.properties.height)
+            )
 
         pg.display.set_caption(self.properties.name)
 

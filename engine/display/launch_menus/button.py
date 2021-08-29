@@ -10,9 +10,11 @@ from engine.display.colors import Colors
 from engine.display.window import Window
 from typing import Any
 
+
 @dataclass
-class ButtonProperties():
+class ButtonProperties:
     """General button properties."""
+
     # Button text
     text: str
 
@@ -33,12 +35,12 @@ class ButtonProperties():
 
     # Update coordinate values once class has been initialized
     def __post_init__(self):
-        self.top_left_x = self.center_x - self.width/2
-        self.top_left_y = self.center_y - self.height/2
-        self.font_size = int(0.75*self.height)
+        self.top_left_x = self.center_x - self.width / 2
+        self.top_left_y = self.center_y - self.height / 2
+        self.font_size = int(0.75 * self.height)
 
 
-class Button():
+class Button:
     """Main menu button class."""
 
     def __init__(self, text, function, center_coords):
@@ -47,20 +49,26 @@ class Button():
 
         # Main menu button constants
         self.properties = ButtonProperties(
-            text, 
-            center_coords[0], 
-            center_coords[1], 
-            6*self.window.properties.width_unit, 
-            self.window.properties.height_unit
+            text,
+            center_coords[0],
+            center_coords[1],
+            6 * self.window.properties.width_unit,
+            self.window.properties.height_unit,
         )
 
         # Create a new surface for the button's rectangle
-        self.button_surface = pg.Surface((self.properties.width, self.properties.height))
+        self.button_surface = pg.Surface(
+            (self.properties.width, self.properties.height)
+        )
 
         # Create a collision box in top left corner
-        self.collision_box = pg.Rect(0, 0, self.properties.width, self.properties.height)
+        self.collision_box = pg.Rect(
+            0, 0, self.properties.width, self.properties.height
+        )
         # Move to the correct location. "move_ip" treats the button as a mutable type
-        self.collision_box.move_ip(self.properties.top_left_x, self.properties.top_left_y)
+        self.collision_box.move_ip(
+            self.properties.top_left_x, self.properties.top_left_y
+        )
 
         # Make the button's function to call on a press an instance variable
         self.function = function
@@ -101,15 +109,22 @@ class Button():
         self.draw_text(text_color)
 
         # Draw button to display surface
-        self.window.display_surface.blit(self.button_surface, (self.properties.top_left_x, self.properties.top_left_y))
+        self.window.display_surface.blit(
+            self.button_surface,
+            (self.properties.top_left_x, self.properties.top_left_y),
+        )
 
     def draw_text(self, text_color):
         """Draws the button text onto the center of the button."""
 
         text_surface = self.font.render(self.properties.text, True, text_color)
 
-        top_left_x = int(self.button_surface.get_width()/2 - text_surface.get_width()/2)
-        top_left_y = int(self.button_surface.get_height()/2 - text_surface.get_height()/2)
+        top_left_x = int(
+            self.button_surface.get_width() / 2 - text_surface.get_width() / 2
+        )
+        top_left_y = int(
+            self.button_surface.get_height() / 2 - text_surface.get_height() / 2
+        )
         self.button_surface.blit(text_surface, (top_left_x, top_left_y))
 
     def is_pressed(self):
@@ -142,5 +157,3 @@ class Button():
             just_pressed = True
 
         return just_pressed
-
-

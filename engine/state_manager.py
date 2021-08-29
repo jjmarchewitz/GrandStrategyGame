@@ -4,13 +4,15 @@
 
 import pygame as pg
 
-class StateManager():
+
+class StateManager:
     """A representation of the current state of the game.
-    
+
     The game state can be one of the super states, but not the other way around."""
 
     # Singleton instance
     __instance = None
+
     @staticmethod
     def get_instance():
         if StateManager.__instance == None:
@@ -31,7 +33,7 @@ class StateManager():
             "LAUNCH_MENU": "LAUNCH_MENU",
             "IN_GAME": "IN_GAME",
         }
-        
+
         # Launch menu states
         self.launch_menu = {
             "MAIN_MENU": "MAIN_MENU",
@@ -41,7 +43,7 @@ class StateManager():
             "OPTIONS": "OPTIONS",
             "LOAD_SAVE": "LOAD_SAVE",
         }
-        
+
         # In-game states
         self.in_game = {
             "NEW_GAME": "NEW_GAME",
@@ -51,7 +53,7 @@ class StateManager():
             "SAVING": "SAVING",
             "START_FROM_SAVE": "START_FROM_SAVE",
         }
-        
+
         self.hosting = False
         self.singleplayer = False
 
@@ -68,7 +70,7 @@ class StateManager():
             self.super_state = self.super_states["IN_GAME"]
         else:
             raise Exception("Invalid state name.")
-        
+
         # Update individual state-related flags
         if self.state == self.launch_menu["MAIN_MENU"]:
             self.hosting = False
